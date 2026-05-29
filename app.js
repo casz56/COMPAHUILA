@@ -1017,3 +1017,184 @@ document.addEventListener('click', (event) => {
   setView('mapa');
   setTimeout(() => initMap(), 120);
 });
+
+/* ==============================
+   COMPAH v1.7 · Auditoría UX, botón flotante y mejoras transversales
+   ============================== */
+function compactCurrencyV17(value) {
+  if (value >= 1000000000) return `$ ${(value / 1000000000).toLocaleString('es-CO', { maximumFractionDigits: 1 })} mil M`;
+  if (value >= 1000000) return `$ ${(value / 1000000).toLocaleString('es-CO', { maximumFractionDigits: 1 })} M`;
+  return money(value);
+}
+
+function setVersionV17() {
+  document.querySelectorAll('.brand-card .badge').forEach(el => el.textContent = 'Prototipo institucional v1.7');
+  document.querySelectorAll('.login-chip').forEach(el => el.textContent = 'Versión 1.7 · Validación integral');
+  const footer = document.querySelector('.footer p strong');
+  if (footer) footer.textContent = 'COMPAH · Prototipo funcional v1.7.';
+}
+
+function renderKpis() {
+  const municipiosCubiertos = new Set(COMPAH.productores.map(p => p.municipio)).size;
+  const totalContratos = state.contracts.reduce((acc, c) => acc + c.valorTotal, 0);
+  const totalLocal = state.contracts.reduce((acc, c) => acc + c.comprasLocales, 0);
+  const totalAlimentos = state.contracts.reduce((acc, c) => acc + c.valorAlimentos, 0);
+  const comprasValidadas = state.purchases.filter(p => p.estado === 'Aprobado').length;
+  const alertas = state.contracts.filter(c => percent(c) < 30).length + COMPAH.productores.filter(p => p.estado !== 'Validado').length;
+  const compliance = Math.round((totalLocal / Math.max(totalAlimentos, 1)) * 100);
+  const validatedPct = Math.round((comprasValidadas / Math.max(state.purchases.length, 1)) * 100);
+  const acfc = COMPAH.productores.filter(p => p.tipo === 'Organización ACFC').length;
+  const kpis = [
+    { label: 'Productores', value: number(COMPAH.productores.length), full: `${number(COMPAH.productores.length)} registros`, score: 92, note: 'Base territorial de productores y organizaciones por municipio, vereda, línea productiva, capacidad y estado documental.' },
+    { label: 'Organizaciones ACFC', value: number(acfc), full: `${number(acfc)} organizaciones`, score: Math.min(100, acfc * 7), note: 'Actores asociativos que fortalecen circuitos cortos, agregación de oferta y participación de la agricultura campesina familiar y comunitaria.' },
+    { label: 'Productos ofertados', value: number(COMPAH.productos.length), full: `${number(COMPAH.productos.length)} líneas agroalimentarias`, score: 80, note: 'Catálogo priorizado de alimentos, incluyendo pasifloras, lácteos, carnes, piscícola, café, cacao, cereales y hortalizas.' },
+    { label: 'Cobertura municipal', value: `${municipiosCubiertos}/37`, full: `${municipiosCubiertos} de 37 municipios`, score: Math.round(municipiosCubiertos / 37 * 100), note: 'Cobertura territorial del banco de oferta local para lectura de brechas de abastecimiento por subregión.' },
+    { label: 'Contratos', value: number(state.contracts.length), full: `${number(state.contracts.length)} contratos`, score: Math.min(100, state.contracts.length * 15), note: 'Contratos alimentarios vinculados a entidad, operador, supervisor, valor destinado a alimentos y seguimiento Ley 2046.' },
+    { label: 'Valor contractual', value: compactCurrencyV17(totalContratos), full: money(totalContratos), score: 76, note: 'Valor contractual simulado de programas públicos de alimentación sujetos a trazabilidad y supervisión.' },
+    { label: 'Compra local', value: compactCurrencyV17(totalLocal), full: money(totalLocal), score: Math.min(100, compliance + 28), note: 'Valor reportado como comprado a pequeños productores locales y organizaciones ACFC.' },
+    { label: 'Ley 2046', value: `${compliance}%`, full: `${compliance}% de cumplimiento`, score: compliance, note: 'Indicador central: compra local mínima del 30% sobre los recursos destinados a alimentos.' },
+    { label: 'Compras validadas', value: number(comprasValidadas), full: `${number(comprasValidadas)} compras aprobadas`, score: validatedPct, note: 'Compras con soporte aprobado por supervisor; fortalecen trazabilidad, auditoría y defensa contractual.' },
+    { label: 'Alertas activas', value: number(alertas), full: `${number(alertas)} alertas`, score: Math.max(8, 100 - alertas * 10), note: 'Alertas por bajo cumplimiento, documentos pendientes, compras por validar o riesgos de concentración.' }
+  ];
+  const grid = $('#kpiGrid');
+  if (!grid) return;
+  grid.innerHTML = kpis.map((k, idx) => {
+    const levelClass = k.score < 30 ? 'kpi-risk' : k.score < 65 ? 'kpi-medium' : 'kpi-ok';
+    const long = String(k.value).length > 10;
+    return `<article class="kpi-card kpi-card-v15 ${levelClass}" data-kpi-index="${idx}" data-long="${long}">
+      <div class="kpi-head-v15"><span>${k.label}</span><em>${k.score}%</em></div>
+      <strong title="${k.full}">${k.value}</strong>
+      <small>lectura ejecutiva</small>
+      <div class="mini-progress-v15"><i style="width:${Math.max(6, Math.min(k.score,100))}%"></i></div>
+    </article>`;
+  }).join('');
+  $$('.kpi-card').forEach(card => {
+    card.addEventListener('click', () => {
+      $$('.kpi-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      const k = kpis[Number(card.dataset.kpiIndex)];
+      setKpiInsight(k.label, k.full, k.note);
+    });
+  });
+  setKpiInsight('Cumplimiento Ley 2046', `${compliance}%`, 'Meta mínima normativa del 30%. El tablero identifica contratos en riesgo, compras pendientes de validación y acciones de supervisión priorizadas.');
+}
+
+function ensureProductTabsV17() {
+  const section = $('#view-productos');
+  const catalog = $('#productCatalog');
+  if (!section || !catalog || $('#productTabsV17')) return;
+  const tabs = document.createElement('div');
+  tabs.id = 'productTabsV17';
+  tabs.className = 'product-tabs-v17';
+  catalog.parentNode.insertBefore(tabs, catalog);
+}
+
+function renderProductTabsV17(activeCategory = 'Todas') {
+  ensureProductTabsV17();
+  const tabs = $('#productTabsV17');
+  if (!tabs) return;
+  const categories = ['Todas', ...new Set(COMPAH.productos.map(p => p.categoria))];
+  tabs.innerHTML = categories.map(cat => `<button type="button" class="${cat === activeCategory ? 'active' : ''}" data-product-category="${cat}">${cat}</button>`).join('');
+}
+
+function renderProducts(category = window.COMPAH_ACTIVE_CATEGORY || 'Todas') {
+  window.COMPAH_ACTIVE_CATEGORY = category;
+  renderProductTabsV17(category);
+  const search = $('#productSearch')?.value?.toLowerCase() || '';
+  const products = COMPAH.productos.filter(p => {
+    const matchText = `${p.nombre} ${p.categoria} ${p.requisito}`.toLowerCase().includes(search);
+    const matchCat = category === 'Todas' || p.categoria === category;
+    return matchText && matchCat;
+  });
+  $('#productCatalog').innerHTML = products.map(p => {
+    const s = productStats(p.nombre);
+    const pct = Math.min(100, Math.max(12, s.producers.length * 9));
+    return `<article class="product-card product-card-v15" data-product="${p.nombre}" tabindex="0" role="button" aria-label="Analizar ${p.nombre}">
+      <div class="product-top-v15"><span class="product-icon-v15">${p.icono}</span><span class="tag">${p.categoria}</span></div>
+      <h4>${p.nombre}</h4>
+      <p>${p.requisito}</p>
+      <div class="product-metrics-v15">
+        <span><strong>${s.producers.length}</strong> oferentes</span>
+        <span><strong>${s.municipalities.size}</strong> municipios</span>
+        <span><strong>${number(s.capacity)}</strong> cap.</span>
+      </div>
+      <div class="mini-progress-v15"><i style="width:${pct}%"></i></div>
+      <button class="product-link-v15" data-product-map="${p.nombre}">Analizar en mapa</button>
+    </article>`;
+  }).join('') || '<div class="panel"><h4>Sin resultados</h4><p>Prueba con otra línea agroalimentaria, categoría o palabra clave.</p></div>';
+  const first = products[0]?.nombre || COMPAH.productos[0]?.nombre;
+  if (first) setProductInsight(first);
+  $$('.product-card-v15').forEach(card => {
+    const name = card.dataset.product;
+    const activate = () => {
+      $$('.product-card-v15').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      setProductInsight(name);
+    };
+    card.addEventListener('mouseenter', activate);
+    card.addEventListener('focus', activate);
+    card.addEventListener('click', (e) => { if (!e.target.closest('[data-product-map]')) activate(); });
+  });
+}
+
+function bindQuickActionV17() {
+  const wrap = $('#quickAction');
+  const btn = $('#quickActionBtn');
+  const panel = $('#quickActionPanel');
+  if (!wrap || !btn || btn.dataset.boundV17) return;
+  btn.dataset.boundV17 = 'true';
+  btn.addEventListener('click', () => {
+    const open = wrap.classList.toggle('open');
+    btn.setAttribute('aria-expanded', String(open));
+    panel?.setAttribute('aria-hidden', String(!open));
+  });
+  document.addEventListener('click', (e) => {
+    if (!wrap.contains(e.target)) {
+      wrap.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+      panel?.setAttribute('aria-hidden', 'true');
+    }
+    const quickView = e.target.closest('[data-quick-view]');
+    if (quickView) {
+      const view = quickView.dataset.quickView;
+      wrap.classList.remove('open');
+      if (view === 'compras') {
+        setView('compras');
+        $('#addPurchaseBtn')?.click();
+      } else {
+        setView(view);
+      }
+    }
+    const quickReport = e.target.closest('[data-quick-report]');
+    if (quickReport) {
+      wrap.classList.remove('open');
+      setView('reportes');
+      setTimeout(() => renderReports(quickReport.dataset.quickReport), 80);
+    }
+    const cat = e.target.closest('[data-product-category]');
+    if (cat) {
+      renderProducts(cat.dataset.productCategory);
+    }
+  });
+}
+
+function validateProjectV17() {
+  const required = ['loginScreen','sidebar','kpiGrid','map','productCatalog','productInsight','quickAction'];
+  const missing = required.filter(id => !document.getElementById(id));
+  if (missing.length) console.warn('COMPAH v1.7 · Elementos pendientes:', missing);
+  else console.info('COMPAH v1.7 · Validación básica OK: layout, dashboard, mapa, productos y botón flotante.');
+}
+
+function bindResponsiveMapV17() {
+  window.addEventListener('resize', () => {
+    if (state.currentView === 'mapa' && state.map) setTimeout(() => state.map.invalidateSize(true), 120);
+  }, { passive:true });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  setVersionV17();
+  bindQuickActionV17();
+  bindResponsiveMapV17();
+  ensureProductTabsV17();
+  setTimeout(() => { renderProducts(); renderKpis(); validateProjectV17(); }, 250);
+});
