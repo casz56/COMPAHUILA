@@ -1376,3 +1376,95 @@ document.addEventListener('DOMContentLoaded', () => {
   makeViewsFeelAliveV18();
   setTimeout(() => { upgradeQuickActionV18(); validateProjectV18(); }, 450);
 });
+
+/* ==============================
+   COMPAH v1.9 · Limpieza visual, autosize armónico y alertas premium
+   ============================== */
+function setVersionV18() {
+  document.querySelectorAll('.brand-card .badge').forEach(el => el.textContent = 'Prototipo institucional v1.9');
+  document.querySelectorAll('.login-chip').forEach(el => el.textContent = 'Versión 1.9 · Diseño limpio');
+  const footer = document.querySelector('.footer p strong');
+  if (footer) footer.textContent = 'COMPAH · Prototipo funcional v1.9.';
+}
+
+function renderKpis() {
+  const municipiosCubiertos = new Set(COMPAH.productores.map(p => p.municipio)).size;
+  const totalContratos = state.contracts.reduce((acc, c) => acc + c.valorTotal, 0);
+  const totalLocal = state.contracts.reduce((acc, c) => acc + c.comprasLocales, 0);
+  const totalAlimentos = state.contracts.reduce((acc, c) => acc + c.valorAlimentos, 0);
+  const comprasValidadas = state.purchases.filter(p => p.estado === 'Aprobado').length;
+  const alertas = state.contracts.filter(c => percent(c) < 30).length + COMPAH.productores.filter(p => p.estado !== 'Validado').length;
+  const compliance = Math.round((totalLocal / Math.max(totalAlimentos, 1)) * 100);
+  const validatedPct = Math.round((comprasValidadas / Math.max(state.purchases.length, 1)) * 100);
+  const acfc = COMPAH.productores.filter(p => p.tipo === 'Organización ACFC').length;
+  const kpis = [
+    { label: 'Productores', value: number(COMPAH.productores.length), full: `${number(COMPAH.productores.length)} registros`, score: 92, note: 'Base territorial de productores y organizaciones por municipio, vereda, línea productiva, capacidad y estado documental.' },
+    { label: 'Organizaciones ACFC', value: number(acfc), full: `${number(acfc)} organizaciones`, score: Math.min(100, acfc * 7), note: 'Actores asociativos que fortalecen circuitos cortos, agregación de oferta y participación de la agricultura campesina familiar y comunitaria.' },
+    { label: 'Productos ofertados', value: number(COMPAH.productos.length), full: `${number(COMPAH.productos.length)} líneas agroalimentarias`, score: 80, note: 'Catálogo priorizado de alimentos, incluyendo pasifloras, lácteos, carnes, piscícola, café, cacao, cereales y hortalizas.' },
+    { label: 'Cobertura municipal', value: `${municipiosCubiertos}/37`, full: `${municipiosCubiertos} de 37 municipios`, score: Math.round(municipiosCubiertos / 37 * 100), note: 'Cobertura territorial del banco de oferta local para lectura de brechas de abastecimiento por subregión.' },
+    { label: 'Contratos', value: number(state.contracts.length), full: `${number(state.contracts.length)} contratos`, score: Math.min(100, state.contracts.length * 15), note: 'Contratos alimentarios vinculados a entidad, operador, supervisor, valor destinado a alimentos y seguimiento Ley 2046.' },
+    { label: 'Valor contractual', value: compactCurrencyV17(totalContratos), full: money(totalContratos), score: 76, note: 'Valor contractual simulado de programas públicos de alimentación sujetos a trazabilidad y supervisión.' },
+    { label: 'Compra local', value: compactCurrencyV17(totalLocal), full: money(totalLocal), score: Math.min(100, compliance + 28), note: 'Valor reportado como comprado a pequeños productores locales y organizaciones ACFC.' },
+    { label: 'Ley 2046', value: `${compliance}%`, full: `${compliance}% de cumplimiento`, score: compliance, note: 'Indicador central: compra local mínima del 30% sobre los recursos destinados a alimentos.' },
+    { label: 'Compras validadas', value: number(comprasValidadas), full: `${number(comprasValidadas)} compras aprobadas`, score: validatedPct, note: 'Compras con soporte aprobado por supervisor; fortalecen trazabilidad, auditoría y defensa contractual.' },
+    { label: 'Alertas activas', value: number(alertas), full: `${number(alertas)} alertas`, score: Math.max(8, 100 - alertas * 10), note: 'Alertas por bajo cumplimiento, documentos pendientes, compras por validar o riesgos de concentración.' }
+  ];
+  const grid = $('#kpiGrid');
+  if (!grid) return;
+  grid.innerHTML = kpis.map((k, idx) => {
+    const levelClass = k.score < 30 ? 'kpi-risk' : k.score < 65 ? 'kpi-medium' : 'kpi-ok';
+    const long = String(k.value).length > 9;
+    return `<article class="kpi-card kpi-card-v19 ${levelClass}" data-kpi-index="${idx}" data-long="${long}">
+      <div class="kpi-head-v19"><span>${k.label}</span><em>${k.score}%</em></div>
+      <strong title="${k.full}">${k.value}</strong>
+      <small>Lectura ejecutiva</small>
+      <div class="mini-progress-v19"><i style="width:${Math.max(6, Math.min(k.score,100))}%"></i></div>
+    </article>`;
+  }).join('');
+  $$('.kpi-card').forEach(card => {
+    card.addEventListener('click', () => {
+      $$('.kpi-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      const k = kpis[Number(card.dataset.kpiIndex)];
+      setKpiInsight(k.label, k.full, k.note);
+    });
+  });
+  setKpiInsight('Cumplimiento Ley 2046', `${compliance}%`, 'Meta mínima normativa del 30%. El tablero identifica contratos en riesgo, compras pendientes de validación y acciones de supervisión priorizadas.');
+}
+
+function renderAlerts() {
+  const contractAlerts = state.contracts.filter(c => percent(c) < 30).map(c => ({
+    title: `Contrato bajo mínimo legal: ${c.nombre}`,
+    detail: `Cumplimiento actual ${percent(c)}%. Debe alcanzar al menos 30%.`,
+    level: 'Crítica', icon: '⚠️', action: 'Priorizar supervisión'
+  }));
+  const producerAlerts = COMPAH.productores.filter(p => p.estado !== 'Validado').slice(0, 5).map(p => ({
+    title: `Productor requiere subsanación: ${p.nombre}`,
+    detail: `${p.municipio} · Actualizar documentos o requisitos sanitarios.`,
+    level: 'Media', icon: '📄', action: 'Revisar ficha'
+  }));
+  const alerts = [...contractAlerts, ...producerAlerts];
+  const box = $('#alertList');
+  if (!box) return;
+  box.innerHTML = alerts.map(a => {
+    const media = a.level !== 'Crítica';
+    return `<article class="alert-item-v19 ${media ? 'media' : 'critica'}">
+      <div class="alert-icon-v19">${a.icon}</div>
+      <div class="alert-body-v19">
+        <strong>${a.title}</strong>
+        <p>${a.detail}</p>
+        <div class="alert-meta-v19">
+          <span class="alert-pill-v19 ${media ? 'warn' : 'bad'}">${a.level}</span>
+          <button type="button" class="alert-action-v19">${a.action}</button>
+        </div>
+      </div>
+    </article>`;
+  }).join('');
+}
+
+function validateProjectV18() {
+  const required = ['loginScreen','sidebar','kpiGrid','map','productCatalog','productInsight','quickAction','commandDialogV18'];
+  const missing = required.filter(id => !document.getElementById(id));
+  if (missing.length) console.warn('COMPAH v1.9 · Elementos pendientes:', missing);
+  else console.info('COMPAH v1.9 · Validación OK: limpieza visual, autosize, dashboard, alertas, mapa y asistente.');
+}
