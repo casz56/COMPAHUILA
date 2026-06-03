@@ -1019,7 +1019,7 @@ document.addEventListener('click', (event) => {
 });
 
 /* ==============================
-   COMPAH v1.7 · Auditoría UX, botón flotante y mejoras transversales
+   COMPAH v1.8 · Auditoría UX, botón flotante y mejoras transversales
    ============================== */
 function compactCurrencyV17(value) {
   if (value >= 1000000000) return `$ ${(value / 1000000000).toLocaleString('es-CO', { maximumFractionDigits: 1 })} mil M`;
@@ -1028,10 +1028,10 @@ function compactCurrencyV17(value) {
 }
 
 function setVersionV17() {
-  document.querySelectorAll('.brand-card .badge').forEach(el => el.textContent = 'Prototipo institucional v1.7');
-  document.querySelectorAll('.login-chip').forEach(el => el.textContent = 'Versión 1.7 · Validación integral');
+  document.querySelectorAll('.brand-card .badge').forEach(el => el.textContent = 'Prototipo institucional v1.8');
+  document.querySelectorAll('.login-chip').forEach(el => el.textContent = 'Versión 1.8 · Interacción premium');
   const footer = document.querySelector('.footer p strong');
-  if (footer) footer.textContent = 'COMPAH · Prototipo funcional v1.7.';
+  if (footer) footer.textContent = 'COMPAH · Prototipo funcional v1.8.';
 }
 
 function renderKpis() {
@@ -1181,8 +1181,8 @@ function bindQuickActionV17() {
 function validateProjectV17() {
   const required = ['loginScreen','sidebar','kpiGrid','map','productCatalog','productInsight','quickAction'];
   const missing = required.filter(id => !document.getElementById(id));
-  if (missing.length) console.warn('COMPAH v1.7 · Elementos pendientes:', missing);
-  else console.info('COMPAH v1.7 · Validación básica OK: layout, dashboard, mapa, productos y botón flotante.');
+  if (missing.length) console.warn('COMPAH v1.8 · Elementos pendientes:', missing);
+  else console.info('COMPAH v1.8 · Validación básica OK: layout, dashboard, mapa, productos y botón flotante.');
 }
 
 function bindResponsiveMapV17() {
@@ -1197,4 +1197,182 @@ document.addEventListener('DOMContentLoaded', () => {
   bindResponsiveMapV17();
   ensureProductTabsV17();
   setTimeout(() => { renderProducts(); renderKpis(); validateProjectV17(); }, 250);
+});
+
+/* =========================================================
+   COMPAH v1.8 · Refinamiento dinámico y experiencia premium
+   ========================================================= */
+function setVersionV18() {
+  document.querySelectorAll('.brand-card .badge').forEach(el => el.textContent = 'Prototipo institucional v1.8');
+  document.querySelectorAll('.login-chip').forEach(el => el.textContent = 'Versión 1.8 · Interacción premium');
+  const footer = document.querySelector('.footer p strong');
+  if (footer) footer.textContent = 'COMPAH · Prototipo funcional v1.8.';
+}
+
+function enhanceTopbarV18() {
+  const actions = document.querySelector('.topbar-actions');
+  if (!actions || document.getElementById('commandBtnV18')) return;
+  actions.insertAdjacentHTML('afterbegin', `
+    <button id="commandBtnV18" class="v18-command-btn" type="button" title="Abrir buscador inteligente">
+      <span>Buscar acción, módulo o reporte</span><kbd>Ctrl K</kbd>
+    </button>
+    <span class="v18-status-pill"><i></i> Sistema activo</span>
+  `);
+}
+
+function enhanceHomeV18() {
+  const hero = document.querySelector('#view-home .hero');
+  if (!hero || document.getElementById('workflowV18')) return;
+  hero.insertAdjacentHTML('afterend', `
+    <div id="workflowV18" class="v18-workflow">
+      <article class="v18-step"><b>1</b><strong>Registrar oferta</strong><span>Productores y organizaciones ACFC cargan productos, capacidad y ubicación.</span></article>
+      <article class="v18-step"><b>2</b><strong>Conectar demanda</strong><span>Operadores consultan oferta local por producto, municipio y disponibilidad.</span></article>
+      <article class="v18-step"><b>3</b><strong>Validar compras</strong><span>Supervisores aprueban soportes y verifican cumplimiento contractual.</span></article>
+      <article class="v18-step"><b>4</b><strong>Reportar Ley 2046</strong><span>El sistema consolida indicadores, alertas y reportes ejecutivos.</span></article>
+    </div>
+  `);
+}
+
+function createCommandPaletteV18() {
+  if (document.getElementById('commandDialogV18')) return;
+  document.body.insertAdjacentHTML('beforeend', `
+    <dialog id="commandDialogV18" class="v18-command-dialog">
+      <div class="v18-command-box">
+        <header>
+          <div><h3>Centro inteligente COMPAH</h3><p>Navega rápido, consulta módulos o genera reportes demo.</p></div>
+          <button class="v18-command-close" type="button" aria-label="Cerrar">×</button>
+        </header>
+        <input id="commandSearchV18" class="v18-command-search" type="search" placeholder="Buscar: mapa, productor, contrato, Ley 2046..." />
+        <div id="commandResultsV18" class="v18-command-results"></div>
+      </div>
+    </dialog>
+  `);
+}
+
+const COMMANDS_V18 = [
+  { icon:'🏠', title:'Inicio institucional', desc:'Volver a la portada ejecutiva', view:'home', keys:'inicio portada hero' },
+  { icon:'📊', title:'Dashboard ejecutivo', desc:'Indicadores, alertas y cumplimiento', view:'dashboard', keys:'indicadores kpi tablero dashboard' },
+  { icon:'🗺️', title:'Mapa Huila', desc:'Oferta productiva georreferenciada', view:'mapa', keys:'mapa territorio municipios productores' },
+  { icon:'🌱', title:'Productores', desc:'Banco agroalimentario local', view:'productores', keys:'productores acfc organizaciones' },
+  { icon:'🥭', title:'Productos priorizados', desc:'Líneas agroalimentarias y análisis por producto', view:'productos', keys:'productos cholupa cafe cacao lacteos carnes frutas' },
+  { icon:'📑', title:'Contratos', desc:'Contratos alimentarios y meta local', view:'contratos', keys:'contratos pae hospitales operador' },
+  { icon:'🧾', title:'Compras locales', desc:'Registro y trazabilidad de compras', view:'compras', keys:'compras soportes facturas remisiones' },
+  { icon:'✅', title:'Supervisión', desc:'Validación de soportes y observaciones', view:'supervision', keys:'supervisor validar aprobar observar' },
+  { icon:'➕', title:'Registro asistido', desc:'Crear actor demo en la plataforma', view:'registro', keys:'registro actor productor operador supervisor' },
+  { icon:'⚖️', title:'Reporte Ley 2046', desc:'Generar salida demo de cumplimiento', view:'reportes', report:'ley2046', keys:'reporte ley 2046 cumplimiento 30' }
+];
+
+function renderCommandResultsV18(filter = '') {
+  const box = document.getElementById('commandResultsV18');
+  if (!box) return;
+  const q = filter.trim().toLowerCase();
+  const items = COMMANDS_V18.filter(c => (`${c.title} ${c.desc} ${c.keys}`).toLowerCase().includes(q));
+  box.innerHTML = items.map(c => `
+    <button class="v18-command-item" type="button" data-v18-view="${c.view}" ${c.report ? `data-v18-report="${c.report}"` : ''}>
+      <i>${c.icon}</i><span><strong>${c.title}</strong><br><span>${c.desc}</span></span><b>↵</b>
+    </button>
+  `).join('') || '<div class="panel"><strong>Sin resultados.</strong><p>Prueba con “mapa”, “Ley 2046”, “productores” o “contratos”.</p></div>';
+}
+
+function openCommandPaletteV18() {
+  createCommandPaletteV18();
+  renderCommandResultsV18('');
+  const dialog = document.getElementById('commandDialogV18');
+  if (dialog && !dialog.open) dialog.showModal();
+  setTimeout(() => document.getElementById('commandSearchV18')?.focus(), 80);
+}
+
+function closeCommandPaletteV18() {
+  const dialog = document.getElementById('commandDialogV18');
+  if (dialog?.open) dialog.close();
+}
+
+function bindCommandPaletteV18() {
+  enhanceTopbarV18();
+  createCommandPaletteV18();
+  const btn = document.getElementById('commandBtnV18');
+  if (btn && !btn.dataset.boundV18) {
+    btn.dataset.boundV18 = 'true';
+    btn.addEventListener('click', openCommandPaletteV18);
+  }
+  const dialog = document.getElementById('commandDialogV18');
+  const close = dialog?.querySelector('.v18-command-close');
+  if (close && !close.dataset.boundV18) {
+    close.dataset.boundV18 = 'true';
+    close.addEventListener('click', closeCommandPaletteV18);
+  }
+  const search = document.getElementById('commandSearchV18');
+  if (search && !search.dataset.boundV18) {
+    search.dataset.boundV18 = 'true';
+    search.addEventListener('input', e => renderCommandResultsV18(e.target.value));
+  }
+  document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      openCommandPaletteV18();
+    }
+  });
+  document.addEventListener('click', e => {
+    const item = e.target.closest('[data-v18-view]');
+    if (!item) return;
+    closeCommandPaletteV18();
+    setView(item.dataset.v18View);
+    if (item.dataset.v18Report) setTimeout(() => renderReports(item.dataset.v18Report), 100);
+    showToast(`Módulo abierto: ${item.textContent.trim().replace(/\s+/g,' ').slice(0,42)}`);
+  });
+}
+
+function upgradeQuickActionV18() {
+  const panel = document.getElementById('quickActionPanel');
+  if (!panel || panel.dataset.v18) return;
+  panel.dataset.v18 = 'true';
+  const cumplimiento = Math.round((state.contracts.reduce((a,c)=>a+c.comprasLocales,0) / state.contracts.reduce((a,c)=>a+c.valorAlimentos,0)) * 100);
+  panel.innerHTML = `
+    <div class="quick-action-head">
+      <strong>Asistente COMPAH</strong>
+      <small>Accesos rápidos y lectura ejecutiva</small>
+    </div>
+    <div class="v18-assistant-metric"><span>Cumplimiento Ley 2046</span><strong>${cumplimiento}%</strong></div>
+    <button type="button" data-quick-view="registro">➕ Registrar actor</button>
+    <button type="button" data-quick-view="mapa">🗺️ Ver mapa territorial</button>
+    <button type="button" data-quick-view="compras">🧾 Nueva compra demo</button>
+    <button type="button" data-quick-view="dashboard">📊 Indicadores ejecutivos</button>
+    <button type="button" data-quick-report="ley2046">⚖️ Reporte Ley 2046</button>
+    <button type="button" id="openCommandFromFabV18">⌘ Centro inteligente</button>
+  `;
+  document.getElementById('openCommandFromFabV18')?.addEventListener('click', () => {
+    document.getElementById('quickAction')?.classList.remove('open');
+    openCommandPaletteV18();
+  });
+}
+
+function makeViewsFeelAliveV18() {
+  document.querySelectorAll('.view').forEach(view => view.classList.add('v18-soft-pulse'));
+  setTimeout(() => document.querySelectorAll('.v18-soft-pulse').forEach(el => el.classList.remove('v18-soft-pulse')), 1200);
+}
+
+function bindFriendlyHintsV18() {
+  document.addEventListener('mouseenter', e => {
+    const card = e.target.closest('.product-card-v15');
+    if (card?.dataset.product) {
+      showToast(`Analizando oferta de ${card.dataset.product}. Haz clic para llevarlo al mapa.`);
+    }
+  }, true);
+}
+
+function validateProjectV18() {
+  const required = ['loginScreen','sidebar','kpiGrid','map','productCatalog','productInsight','quickAction','commandDialogV18'];
+  const missing = required.filter(id => !document.getElementById(id));
+  if (missing.length) console.warn('COMPAH v1.8 · Elementos pendientes:', missing);
+  else console.info('COMPAH v1.8 · Validación OK: navegación, dashboard, mapa, catálogo, asistente y centro inteligente.');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  setVersionV18();
+  enhanceHomeV18();
+  bindCommandPaletteV18();
+  upgradeQuickActionV18();
+  bindFriendlyHintsV18();
+  makeViewsFeelAliveV18();
+  setTimeout(() => { upgradeQuickActionV18(); validateProjectV18(); }, 450);
 });

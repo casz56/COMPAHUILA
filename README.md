@@ -1,41 +1,33 @@
-# COMPAH — Compras Públicas de Alimentos del Huila v1.7
+# COMPAH — Compras Públicas de Alimentos del Huila v1.8
 
-Prototipo funcional institucional para conectar productores locales, organizaciones ACFC, operadores, supervisores y entidades compradoras en el marco de la Ley 2046 de 2020.
+Prototipo institucional funcional para conectar productores locales, organizaciones ACFC, operadores, supervisores y entidades compradoras en el marco de la Ley 2046 de 2020.
 
-## Revisión integral realizada
+## Mejoras v1.8
 
-Se tomó como base la versión 1.5 y se realizó una revisión funcional, visual y de experiencia de usuario para consolidar una versión más estable, limpia y premium.
+- Refinamiento visual premium con predominio de blanco, sombras suaves y componentes más limpios.
+- Experiencia más dinámica y amigable para el usuario.
+- Centro inteligente de navegación rápida con atajo `Ctrl + K`.
+- Botón flotante inferior derecho mejorado como **Asistente COMPAH**.
+- Ruta operativa visual en la pantalla de inicio.
+- Mejoras de interacción en tarjetas, KPIs, productos, mapa y paneles.
+- Microanimaciones, estados hover y lectura ejecutiva más clara.
+- Validación básica de componentes críticos: login, sidebar, dashboard, mapa, catálogo, asistente y centro inteligente.
 
-## Mejoras v1.7
+## Archivos
 
-- Validación básica del desarrollo web: estructura, vistas principales, mapa, dashboard, catálogo, reportes y componentes críticos.
-- Nuevo botón flotante interactivo en la parte inferior derecha con accesos rápidos a registro, mapa, compras, dashboard y reporte Ley 2046.
-- Layout más limpio y ejecutivo, con predominio de blanco y reducción de carga visual.
-- Corrección adicional de autosize/autoscale en KPIs para evitar desbordamientos en cifras largas.
-- KPI cards con jerarquía más gerencial, menos negrilla pesada y lectura más elegante.
-- Catálogo de productos más interactivo con filtros por categoría, tarjetas mejor estructuradas y navegación directa al mapa.
-- Mejora responsive para escritorio, tablet y móvil.
-- Conservación del mapa estilo Día E Huila con enfoque territorial, marcadores y lectura dinámica.
-- Botón flotante oculto antes del login y disponible dentro del aplicativo.
-
-## Estructura
-
-- `index.html`: estructura de la aplicación.
-- `styles.css`: estilos institucionales, responsive y componentes v1.7.
-- `app.js`: lógica de navegación, indicadores, mapa, reportes, validación y botón flotante.
-- `data.js`: datos simulados de municipios, productores, productos, contratos y compras.
+- `index.html`: estructura principal del aplicativo.
+- `styles.css`: estilos institucionales, responsive y componentes v1.8.
+- `app.js`: lógica del prototipo, navegación, mapa, KPIs, productos, reportes y asistente.
+- `data.js`: datos simulados del Huila.
 - `assets/`: logos institucionales.
 
 ## Uso
 
-Abre `index.html` en el navegador o ejecuta con Live Server desde Visual Studio Code.
+Abre `index.html` en el navegador o desde Visual Studio Code con Live Server.
 
-Datos de ingreso demo:
-
-- Usuario: `admin.compah@huila.gov.co`
-- Contraseña: `demo2026`
-- Rol: cualquiera de los disponibles.
+Usuario demo precargado: `admin.compah@huila.gov.co`  
+Contraseña demo: `demo2026`
 
 ## Nota jurídica
 
-El registro en COMPAH no constituye adjudicación, habilitación contractual ni obligación de compra. La plataforma es un instrumento de información, articulación, trazabilidad y seguimiento de compras públicas locales de alimentos. No reemplaza SECOP II ni los procedimientos de contratación pública.
+El registro en COMPAH no constituye adjudicación, habilitación contractual ni obligación de compra. La plataforma es un instrumento complementario de información, articulación, trazabilidad y seguimiento; no reemplaza SECOP II ni los procedimientos de contratación pública.
