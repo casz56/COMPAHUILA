@@ -4,7 +4,8 @@ const money = v => v >= 1e9 ? `$ ${(v/1e9).toLocaleString('es-CO',{maximumFracti
 const number = v => Number(v).toLocaleString('es-CO');
 const pct = c => Math.round((c.comprasLocales / c.valorAlimentos) * 100);
 const clamp = (v,min,max) => Math.max(min,Math.min(max,v));
-const state = { view:'home', map:null, markers:[], selectedProduct:'Todos', selectedMunicipio:'Todos', selectedMapTab:'territorial', selectedProductCard:null };
+const HUILA_VIEW = { center:[2.54,-75.54], zoom:8, bounds:[[1.55,-76.72],[3.75,-74.65]] };
+const state = { view:'home', map:null, tileLayer:null, markers:[], selectedProduct:'Todos', selectedMunicipio:'Todos', selectedMapTab:'territorial', selectedProductCard:null };
 
 const demandByProduct = {
   'Cholupa': 5200, 'Café pergamino': 8400, 'Tilapia': 6200, 'Leche cruda refrigerada': 11800,
@@ -25,7 +26,7 @@ function navigate(view){
   $(`#view-${view}`)?.classList.add('active-view');
   $$('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.view===view));
   $('#sidebar').classList.remove('open');
-  if(view==='mapa') setTimeout(()=>{ initMap(); fitMapToData(); },120);
+  if(view==='mapa') setTimeout(()=>{ initMap(true); drawMarkers(); fitMapToData(); forceMapRefresh(); },180);
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function fillSelect(el, opts, label='Todos'){ el.innerHTML = label?`<option>${label}</option>`:''; opts.forEach(o=>el.insertAdjacentHTML('beforeend',`<option>${o}</option>`)); }
@@ -93,11 +94,16 @@ function filterMapData(){
   const product=$('#mapProductFilter').value||'Todos'; const region=$('#mapRegionFilter').value||'Todas las regiones'; const municipio=$('#mapMunicipioFilter').value||'Todos los municipios'; const actor=$('#mapActorFilter').value||'Todos los actores';
   return COMPAH.productores.filter(p=>(product==='Todos'||p.productos.includes(product))&&(region==='Todas las regiones'||p.region===region)&&(municipio==='Todos los municipios'||p.municipio===municipio)&&(actor==='Todos los actores'||p.tipo===actor));
 }
-function initMap(){
-  if(!window.L){ $('#map').innerHTML='<div class="panel"><h3>Mapa no disponible</h3><p>Conecte internet para cargar Leaflet/OpenStreetMap.</p></div>'; return; }
-  if(!state.map){ state.map=L.map('map',{zoomControl:true}).setView([2.45,-75.65],8); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'&copy; OpenStreetMap'}).addTo(state.map); }
-  setTimeout(()=>state.map.invalidateSize(),60);
-  drawMarkers();
+function initMap(rebuild=false){
+  const el=$('#map');
+  if(!window.L){ el.innerHTML='<div class="panel"><h3>Mapa no disponible</h3><p>Conecte internet para cargar Leaflet/OpenStreetMap.</p></div>'; return; }
+  if(rebuild && state.map){ state.map.remove(); state.map=null; state.tileLayer=null; state.markers=[]; el.innerHTML=''; }
+  if(!state.map){
+    state.map=L.map('map',{zoomControl:true,preferCanvas:true,worldCopyJump:false,maxBoundsViscosity:.55}).setView(HUILA_VIEW.center,HUILA_VIEW.zoom);
+    state.tileLayer=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{minZoom:6,maxZoom:15,detectRetina:false,updateWhenIdle:true,updateWhenZooming:false,keepBuffer:4,attribution:'&copy; OpenStreetMap'}).addTo(state.map);
+    state.tileLayer.on('tileerror',()=>{ if(state.tileLayer._fallbackApplied)return; state.tileLayer._fallbackApplied=true; state.map.removeLayer(state.tileLayer); state.tileLayer=L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{minZoom:6,maxZoom:15,keepBuffer:4,attribution:'&copy; OpenStreetMap &copy; CARTO'}).addTo(state.map); forceMapRefresh(); });
+  }
+  forceMapRefresh();
 }
 function drawMarkers(){
   if(!state.map)return; const data=filterMapData();
@@ -105,7 +111,15 @@ function drawMarkers(){
   data.forEach(p=>{ const icon=L.divIcon({className:'',html:`<div class="custom-marker ${p.tipo==='Organización ACFC'?'org':''}"></div>`,iconSize:[18,18],iconAnchor:[9,9]}); const m=L.marker([p.lat,p.lng],{icon}).addTo(state.map); m.on('mouseover',()=>updateMapReading(p)); m.on('click',()=>updateMapReading(p,true)); state.markers.push(m); });
   updateMapSummary(data); if(data.length) fitMapToData();
 }
-function fitMapToData(){ if(!state.map||!state.markers.length)return; const g=L.featureGroup(state.markers); state.map.fitBounds(g.getBounds().pad(.28)); setTimeout(()=>state.map.invalidateSize(),80); }
+function forceMapRefresh(){ if(!state.map)return; [60,180,420,850].forEach(t=>setTimeout(()=>{ state.map.invalidateSize(true); state.tileLayer?.redraw?.(); },t)); }
+function fitMapToHuila(){ if(!state.map)return; state.map.fitBounds(HUILA_VIEW.bounds,{padding:[18,18],maxZoom:9}); forceMapRefresh(); }
+function fitMapToData(){
+  if(!state.map)return;
+  const data=filterMapData();
+  if(!data.length){ fitMapToHuila(); return; }
+  if(data.length===1){ state.map.setView([data[0].lat,data[0].lng],10,{animate:true}); forceMapRefresh(); return; }
+  const g=L.featureGroup(state.markers); state.map.fitBounds(g.getBounds().pad(.22),{maxZoom:10,padding:[20,20]}); forceMapRefresh();
+}
 function updateMapSummary(data=filterMapData()){
   $('#mapSummary').innerHTML = `<div><strong>Productores visibles</strong><span>${data.length}</span></div><div><strong>Municipios</strong><span>${new Set(data.map(p=>p.municipio)).size}</span></div><div><strong>Organizaciones ACFC</strong><span>${data.filter(p=>p.tipo==='Organización ACFC').length}</span></div><div><strong>Capacidad agregada</strong><span>${number(data.reduce((a,p)=>a+p.capacidad,0))}</span></div>`;
   $('#mapReading').innerHTML = `<strong>${$('#mapProductFilter').value||'Todos los productos'}</strong><p>Filtre por producto, región o municipio. Al pasar el cursor sobre un marcador se actualizará esta lectura sin tapar el mapa.</p>`;
@@ -195,11 +209,11 @@ function initControls(){
   ['producerSearch','producerMunicipioFilter','producerTipoFilter'].forEach(id=>$('#'+id)?.addEventListener('input',renderProducers));
   ['productSearch','productCategoryFilter'].forEach(id=>$('#'+id)?.addEventListener('input',renderProducts));
   $$('.map-tab').forEach(tab=>tab.onclick=()=>{ $$('.map-tab').forEach(t=>t.classList.remove('active')); tab.classList.add('active'); $$('.map-tab-content').forEach(c=>c.classList.remove('active')); $(`#mapTab-${tab.dataset.tab}`).classList.add('active'); if(tab.dataset.tab==='territorial') setTimeout(()=>{initMap();fitMapToData();},80); });
-  $('#fitHuila').onclick=fitMapToData; $('#showOffer').onclick=()=>updateMapSummary(filterMapData()); $('#clearMap').onclick=()=>{ $('#mapProductFilter').value='Todos'; $('#mapRegionFilter').value='Todas las regiones'; $('#mapMunicipioFilter').value='Todos los municipios'; $('#mapActorFilter').value='Todos los actores'; drawMarkers(); };
+  $('#fitHuila').onclick=fitMapToHuila; $('#showOffer').onclick=()=>updateMapSummary(filterMapData()); $('#clearMap').onclick=()=>{ $('#mapProductFilter').value='Todos'; $('#mapRegionFilter').value='Todas las regiones'; $('#mapMunicipioFilter').value='Todos los municipios'; $('#mapActorFilter').value='Todos los actores'; drawMarkers(); };
 }
 function initEvents(){
-  $('#entryLoginForm').addEventListener('submit',e=>{e.preventDefault(); $('#loginScreen').classList.add('hidden');});
-  $('#entryMoreInfo').onclick=()=>alert('COMPAH v2.0 integra oferta local, compras públicas, supervisión y trazabilidad territorial.');
+  $('#entryLoginForm').addEventListener('submit',e=>{e.preventDefault(); $('#loginScreen').classList.add('hidden'); setTimeout(()=>{ if(state.view==='mapa') { initMap(true); drawMarkers(); fitMapToData(); } },220);});
+  $('#entryMoreInfo').onclick=()=>alert('COMPAH v2.0.1 integra oferta local, compras públicas, supervisión, trazabilidad territorial y visualización gerencial.');
   $('#logoutBtn').onclick=()=>$('#loginScreen').classList.remove('hidden');
   $('#menuToggle').onclick=()=>$('#sidebar').classList.toggle('open');
   $$('.nav-item').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.view)));

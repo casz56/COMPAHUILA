@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 1000" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#83b7c8"/>
+      <stop offset="0.45" stop-color="#d7efe8"/>
+      <stop offset="1" stop-color="#f5f8e4"/>
+    </linearGradient>
+    <linearGradient id="field" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6c8b3d"/>
+      <stop offset="0.55" stop-color="#879b3a"/>
+      <stop offset="1" stop-color="#c1bd58"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="72%" cy="18%" r="50%">
+      <stop offset="0" stop-color="#fff7b0" stop-opacity=".62"/>
+      <stop offset="1" stop-color="#fff7b0" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="1.2"/>
+    </filter>
+  </defs>
+  <rect width="1800" height="1000" fill="url(#sky)"/>
+  <rect width="1800" height="1000" fill="url(#glow)"/>
+  <path d="M0 430 C260 340 390 430 610 360 C850 285 1010 335 1195 285 C1430 220 1630 275 1800 210 L1800 610 L0 610 Z" fill="#1c4d45" opacity=".58" filter="url(#soft)"/>
+  <path d="M0 520 C270 440 470 510 710 455 C950 400 1130 460 1370 405 C1570 360 1695 390 1800 355 L1800 700 L0 700 Z" fill="#2d6b4d" opacity=".72"/>
+  <path d="M0 650 C290 560 520 665 800 585 C1020 520 1280 620 1800 500 L1800 1000 L0 1000 Z" fill="url(#field)"/>
+  <g opacity=".38" stroke="#e1d981" stroke-width="3" fill="none">
+    <path d="M-60 820 C290 760 570 740 980 650 C1240 595 1500 560 1860 500"/>
+    <path d="M-60 875 C300 810 610 790 1015 705 C1300 645 1540 610 1860 555"/>
+    <path d="M-60 930 C350 870 650 850 1050 755 C1340 695 1580 675 1860 630"/>
+    <path d="M-60 980 C350 940 720 905 1115 820 C1390 760 1610 735 1860 700"/>
+  </g>
+  <g opacity=".18" fill="#0b2c2b">
+    <rect x="0" y="0" width="1800" height="1000"/>
+  </g>
+</svg>
