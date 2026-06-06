@@ -180,3 +180,470 @@ body{ text-rendering: optimizeLegibility; }
   .brand-symbol{width:70px;height:70px;}
   .login-identity-mark{padding:12px;border-radius:18px;}
 }
+
+
+/* =========================================================
+   COMPAH v2.1.1 — hotfix identidad visual (base)
+   Corrige logos sobredimensionados, overflow horizontal y
+   mantiene la integración de marca sin romper el layout base.
+   ========================================================= */
+html, body { max-width:100%; overflow-x:hidden; }
+img { max-width:100%; }
+.login-screen{
+  background:
+    linear-gradient(90deg,rgba(5,54,54,.55),rgba(5,54,54,.2)),
+    url('assets/campo-huila-bg.svg') center/cover no-repeat,
+    linear-gradient(135deg,#f8fcfb,#fff);
+}
+.login-card{max-height:calc(100vh - 54px); overflow:auto;}
+.login-brand{justify-content:center; min-width:0;}
+.login-identity-mark{
+  width:min(430px,100%);
+  max-height:118px;
+  padding:12px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  overflow:hidden;
+}
+.login-identity-mark img{width:100%; max-height:88px; object-fit:contain; object-position:left center;}
+.login-brand h1{font-size:clamp(42px,5.8vw,76px); line-height:.92;}
+.login-brand p{font-size:clamp(16px,1.4vw,21px);}
+.brand-card{overflow:hidden;}
+.brand-symbol{width:54px;height:54px;border-radius:17px;object-fit:contain;padding:6px;}
+.app-brand-logo{width:100%; max-width:156px; max-height:52px; object-fit:contain; object-position:left center;}
+.top-brand-lockup{max-width:min(520px,46vw); overflow:hidden;}
+.top-brand-lockup .top-logo{height:38px;max-width:150px;flex:0 0 auto;}
+.top-product-logo{height:38px;max-width:190px;object-fit:contain;object-position:left center;}
+.hero-logo-lockup{
+  width:min(380px,100%);
+  max-height:112px;
+  display:flex;
+  align-items:center;
+  padding:12px 16px;
+  margin:12px 0 16px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:22px;
+  box-shadow:0 14px 34px rgba(0,76,80,.06);
+  overflow:hidden;
+}
+.hero-logo-lockup img{width:100%; max-height:82px; object-fit:contain; object-position:left center;}
+.home-hero{grid-template-columns:minmax(0,1.55fr) minmax(260px,.55fr);}
+.home-hero>div:first-child{min-width:0;}
+.home-hero h1{font-size:clamp(34px,4.8vw,66px);}
+.logo-showcase article{min-height:132px; overflow:hidden;}
+.logo-showcase img{max-height:86px; max-width:92%;}
+.logo-showcase article.dark img{max-height:98px;}
+@media(max-width:1100px){
+  .home-hero{grid-template-columns:1fr;}
+  .top-brand-lockup{max-width:42vw;}
+}
+@media(max-width:760px){
+  .login-card{width:min(96vw,620px);grid-template-columns:1fr;}
+  .login-identity-mark{width:100%; max-height:106px;}
+  .login-identity-mark img{max-height:76px;}
+  .hero-logo-lockup{width:100%; max-height:98px;}
+  .hero-logo-lockup img{max-height:68px;}
+  .top-brand-lockup{max-width:48vw;gap:10px;}
+}
+
+/* =========================================================
+   COMPAH v2.1.2 — branding institucional premium
+   Logos optimizados, transparentes y jerarquía visual natural.
+   ========================================================= */
+:root{
+  --brand-glow:0 18px 48px rgba(0,76,80,.10);
+  --brand-soft:rgba(0,108,114,.055);
+}
+body{overflow-x:hidden;}
+.logo-pair.institutional-pair{
+  gap:18px;
+  align-items:center;
+  padding:0;
+  background:transparent;
+}
+.logo-pair.institutional-pair img{
+  object-fit:contain;
+  background:transparent!important;
+  filter:drop-shadow(0 8px 18px rgba(0,40,45,.05));
+}
+.logo-pair.institutional-pair img:first-child{height:clamp(44px,5vw,62px);max-width:230px;}
+.logo-pair.institutional-pair img:last-child{height:clamp(40px,4.6vw,58px);max-width:230px;}
+.login-identity-mark{
+  width:min(460px,100%);
+  max-height:126px;
+  background:linear-gradient(145deg,rgba(255,255,255,.90),rgba(255,255,255,.72));
+  border:1px solid rgba(0,108,114,.13);
+  box-shadow:0 18px 48px rgba(0,76,80,.08);
+  backdrop-filter:blur(10px);
+}
+.login-identity-mark img{
+  max-height:96px;
+  object-fit:contain;
+  object-position:left center;
+}
+.version-pill{
+  background:rgba(255,255,255,.76);
+  border-color:rgba(0,108,114,.18);
+  color:#006c72;
+}
+.sidebar .brand-card{
+  padding:18px;
+  display:grid;
+  gap:12px;
+}
+.sidebar-brand-lockup{
+  display:grid;
+  grid-template-columns:48px minmax(0,1fr);
+  align-items:center;
+  gap:12px;
+  padding:10px 8px;
+  border:1px solid rgba(0,108,114,.11);
+  border-radius:18px;
+  background:linear-gradient(145deg,#fff,#f8fcfb);
+}
+.brand-symbol{
+  width:48px!important;
+  height:48px!important;
+  padding:4px!important;
+  border-radius:15px!important;
+  object-fit:contain!important;
+  background:rgba(255,255,255,.88)!important;
+  border:1px solid rgba(0,108,114,.10)!important;
+  box-shadow:0 10px 22px rgba(0,76,80,.08)!important;
+}
+.app-brand-logo{
+  width:100%!important;
+  max-width:132px!important;
+  max-height:46px!important;
+  object-fit:contain!important;
+  object-position:left center!important;
+  margin:0!important;
+}
+.brand-card h2{margin-top:6px;}
+.top-brand-lockup{
+  max-width:min(720px,52vw)!important;
+  gap:12px!important;
+  align-items:center;
+  padding:6px 10px;
+  border:1px solid rgba(0,108,114,.08);
+  border-radius:18px;
+  background:rgba(255,255,255,.68);
+  box-shadow:0 10px 26px rgba(0,76,80,.035);
+}
+.top-brand-lockup .top-logo.gov{height:36px!important;max-width:128px!important;}
+.top-brand-lockup .top-logo.infi{height:30px!important;max-width:118px!important;}
+.brand-divider{width:1px;height:28px;background:rgba(0,108,114,.16);display:inline-block;flex:0 0 auto;}
+.top-product-logo{
+  height:34px!important;
+  max-width:178px!important;
+  border-left:0!important;
+  padding-left:0!important;
+  object-fit:contain!important;
+}
+.hero-logo-lockup{
+  width:min(410px,100%)!important;
+  max-height:118px!important;
+  border-radius:24px!important;
+  background:linear-gradient(145deg,#fff,rgba(247,251,250,.92))!important;
+  box-shadow:0 18px 45px rgba(0,76,80,.065)!important;
+  border:1px solid rgba(0,108,114,.12)!important;
+}
+.hero-logo-lockup img{max-height:88px!important;}
+.home-hero>div:first-child:after{
+  background:url('assets/brand-compra-local-watermark.png') center/contain no-repeat!important;
+  opacity:.38!important;
+  right:-62px!important;
+  bottom:-78px!important;
+  width:205px!important;
+  height:205px!important;
+}
+.norm-card:after{
+  background:url('assets/brand-compra-local-watermark.png') center/contain no-repeat!important;
+  opacity:.28!important;
+  filter:none!important;
+}
+.identity-section{
+  background:linear-gradient(145deg,#fff,#fbfdfc)!important;
+  border-color:rgba(0,108,114,.12)!important;
+}
+.logo-showcase{
+  align-items:stretch;
+}
+.logo-showcase article{
+  min-height:142px!important;
+  padding:18px!important;
+  background:linear-gradient(145deg,#fff,#fbfdfc)!important;
+  border-color:rgba(0,108,114,.11)!important;
+}
+.logo-showcase article.dark{
+  background:linear-gradient(145deg,#04453f,#006c72)!important;
+  border-color:rgba(255,255,255,.14)!important;
+}
+.logo-showcase img{
+  max-width:88%!important;
+  max-height:88px!important;
+  object-fit:contain!important;
+  filter:drop-shadow(0 8px 18px rgba(0,76,80,.08));
+}
+.logo-showcase article.dark img{
+  max-height:96px!important;
+  max-width:76%!important;
+  filter:drop-shadow(0 10px 22px rgba(0,0,0,.18));
+}
+.logo-showcase span{
+  font-size:clamp(.66rem,.7vw,.78rem)!important;
+  color:#526b73!important;
+}
+.logo-showcase article.dark span{color:rgba(255,255,255,.82)!important;}
+.identity-copy h2{max-width:560px;}
+.identity-copy p{max-width:620px;}
+.brand-card .version-pill{margin-top:0;}
+@media(max-width:1280px){
+  .top-brand-lockup{max-width:44vw!important;}
+  .top-brand-lockup .top-logo.infi{display:none;}
+}
+@media(max-width:900px){
+  .top-product-logo{display:none!important;}
+  .brand-divider{display:none;}
+  .top-brand-lockup{max-width:45vw!important;}
+}
+@media(max-width:760px){
+  .login-identity-mark{max-height:110px;}
+  .login-identity-mark img{max-height:78px;}
+  .sidebar-brand-lockup{grid-template-columns:44px minmax(0,1fr);}
+  .brand-symbol{width:44px!important;height:44px!important;}
+  .app-brand-logo{max-height:38px!important;}
+  .top-brand-lockup{max-width:52vw!important;padding:5px 8px;}
+  .top-brand-lockup .top-logo.gov{height:30px!important;max-width:112px!important;}
+  .hero-logo-lockup{max-height:104px!important;}
+  .hero-logo-lockup img{max-height:74px!important;}
+}
+
+/* v2.1.3 - limpieza visual del sidebar: sin isotipo independiente ni chip redundante */
+.sidebar-brand-lockup-clean {
+  justify-content: center;
+  padding: clamp(0.5rem, 1vw, 0.85rem);
+  min-height: auto;
+}
+.sidebar-brand-lockup-clean .app-brand-logo {
+  width: min(100%, 168px);
+  max-height: 54px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+.brand-card > h2 {
+  margin-top: clamp(0.9rem, 1.4vw, 1.25rem);
+}
+
+
+/* v2.1.4 - rediseño premium del bloque de marca del sidebar */
+.brand-card-v214{
+  position:relative;
+  padding:clamp(1.1rem,1.6vw,1.35rem)!important;
+  gap:0.75rem!important;
+  background:linear-gradient(180deg,#ffffff 0%, #fbfefd 100%)!important;
+  border:1px solid rgba(0,108,114,.13)!important;
+  box-shadow:0 16px 38px rgba(0,76,80,.05)!important;
+}
+.brand-accent-line{
+  display:block;
+  width:64px;
+  height:4px;
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--teal), var(--lime));
+  margin-bottom:2px;
+}
+.sidebar-brand-hero{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.sidebar-brand-plate{
+  width:100%;
+  min-height:92px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:14px 16px;
+  border-radius:22px;
+  background:linear-gradient(145deg,#ffffff 0%, #f4fbf8 100%);
+  border:1px solid rgba(0,108,114,.12);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95), 0 10px 24px rgba(0,76,80,.045);
+}
+.sidebar-brand-primary{
+  width:min(100%, 180px)!important;
+  max-height:88px!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  margin:0 auto!important;
+}
+.sidebar-brand-eyebrow{
+  display:block;
+  font-size:11px;
+  line-height:1.2;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+  font-weight:800;
+  color:var(--teal);
+  opacity:.92;
+}
+.brand-card-v214 > h2{
+  margin:0!important;
+  font-size:clamp(2rem,2.4vw,2.55rem)!important;
+  line-height:.96;
+  letter-spacing:-.045em;
+}
+.brand-card-v214 > p{
+  margin:0!important;
+  color:#5f7179!important;
+  font-size:clamp(0.98rem,1.05vw,1.08rem)!important;
+  line-height:1.45!important;
+  max-width:20ch;
+}
+@media(max-width:1100px){
+  .sidebar-brand-primary{width:min(100%,160px)!important;max-height:76px!important;}
+  .sidebar-brand-plate{min-height:84px;padding:12px 14px;}
+}
+
+
+/* v2.1.5 - refinamiento global de autosize, autoscale y jerarquía tipográfica */
+:root{
+  --title-xl:clamp(2.05rem, 3.1vw, 3.55rem);
+  --title-lg:clamp(1.72rem, 2.35vw, 2.72rem);
+  --title-md:clamp(1.28rem, 1.55vw, 1.82rem);
+  --title-sm:clamp(1.05rem, 1.15vw, 1.28rem);
+  --text-ui:clamp(.86rem, .86vw, .98rem);
+  --text-small:clamp(.72rem, .75vw, .84rem);
+}
+body{font-size:var(--text-ui);}
+.login-brand h1{
+  font-size:clamp(3rem,5.2vw,5.2rem)!important;
+  line-height:.93!important;
+  letter-spacing:-.055em!important;
+}
+.login-form h2{
+  font-size:clamp(2rem,3vw,3rem)!important;
+  line-height:1.02!important;
+  letter-spacing:-.045em!important;
+}
+.page-head h1,.section-title h1{
+  font-size:var(--title-lg)!important;
+  line-height:1.04!important;
+  letter-spacing:-.035em!important;
+  max-width:22ch;
+}
+.home-hero h1{
+  font-size:clamp(2.35rem,4.15vw,4.9rem)!important;
+  line-height:.98!important;
+  letter-spacing:-.055em!important;
+  max-width:15ch;
+}
+.home-hero p,.page-head p,.panel p,.feature-card p{
+  font-size:clamp(.88rem,.92vw,1.02rem)!important;
+  line-height:1.62!important;
+}
+.panel-title h3,.feature-card h3,.product-card h3,.contract-card h3{
+  font-size:var(--title-sm)!important;
+  line-height:1.18!important;
+  letter-spacing:-.018em!important;
+}
+.eyebrow{
+  font-size:clamp(.64rem,.62vw,.74rem)!important;
+  letter-spacing:.15em!important;
+}
+.brand-card-v214 > h2{
+  font-size:clamp(1.72rem,2vw,2.18rem)!important;
+  letter-spacing:-.04em!important;
+}
+.brand-card-v214 > p{
+  font-size:clamp(.84rem,.86vw,.96rem)!important;
+  line-height:1.42!important;
+  max-width:21ch!important;
+}
+.sidebar-brand-eyebrow{font-size:clamp(.58rem,.62vw,.68rem)!important;}
+.sidebar-brand-plate{min-height:86px!important;padding:12px 14px!important;}
+.sidebar-brand-primary{max-height:76px!important;width:min(100%,170px)!important;}
+.nav-item{
+  font-size:clamp(.82rem,.86vw,.94rem)!important;
+  padding:11px 13px!important;
+}
+.legal-mini{font-size:clamp(.68rem,.7vw,.78rem)!important;}
+.kpi-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))!important;}
+.kpi-card{padding:clamp(1rem,1.25vw,1.25rem)!important;}
+.kpi-card .kpi-title{
+  font-size:clamp(.66rem,.68vw,.78rem)!important;
+  min-height:auto!important;
+  padding-right:68px;
+  line-height:1.25!important;
+  letter-spacing:.12em!important;
+}
+.kpi-card .kpi-value{
+  font-size:clamp(1.75rem,2.35vw,2.65rem)!important;
+  line-height:1.02!important;
+  margin:12px 0 6px!important;
+  max-width:100%;
+}
+.kpi-card .kpi-status{
+  font-size:clamp(.62rem,.62vw,.72rem)!important;
+  padding:4px 8px!important;
+  top:16px!important;
+  right:16px!important;
+  max-width:92px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.btn,.map-tab,.municipio-btn,.quick-menu button{
+  font-size:clamp(.78rem,.8vw,.92rem)!important;
+}
+.feature-card,.panel,.contract-card,.product-card,.alert-card{
+  padding:clamp(1rem,1.35vw,1.35rem)!important;
+}
+.products-layout,.map-layout-v20,.dashboard-grid-v20{
+  gap:clamp(.85rem,1.1vw,1.15rem)!important;
+}
+.table-wrap table th{font-size:clamp(.64rem,.66vw,.75rem)!important;}
+.table-wrap table td{font-size:clamp(.78rem,.82vw,.92rem)!important;}
+.topbar{height:66px!important;}
+.view{padding:clamp(1.15rem,2.15vw,2.35rem)!important;}
+.identity-copy h2{
+  font-size:clamp(1.65rem,2.25vw,2.55rem)!important;
+  line-height:1.06!important;
+  letter-spacing:-.04em!important;
+}
+.logo-showcase span{font-size:clamp(.62rem,.64vw,.72rem)!important;}
+.floating-btn{
+  width:54px!important;
+  height:54px!important;
+  font-size:28px!important;
+}
+/* Mejoras visuales complementarias v2.1.5 */
+.page-head{margin-bottom:clamp(1rem,1.35vw,1.4rem)!important;}
+.home-hero>div:first-child,.norm-card{
+  padding:clamp(1.65rem,3.1vw,3.6rem)!important;
+}
+.norm-card strong{font-size:clamp(3.8rem,6.2vw,6.7rem)!important;}
+.route-strip div{padding:clamp(.75rem,1.05vw,1rem)!important;}
+.product-card,.feature-card,.panel,.contract-card,.alert-card,.kpi-card{
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.product-card:hover,.feature-card:hover,.panel:hover,.contract-card:hover,.alert-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 16px 38px rgba(0,76,80,.055);
+  border-color:rgba(0,108,114,.18);
+}
+input,select{font-size:clamp(.8rem,.82vw,.94rem)!important;}
+@media(max-width:1366px){
+  .home-hero h1{font-size:clamp(2.1rem,3.55vw,4rem)!important;}
+  .page-head h1,.section-title h1{font-size:clamp(1.55rem,2vw,2.3rem)!important;}
+  .kpi-grid{grid-template-columns:repeat(auto-fit,minmax(205px,1fr))!important;}
+}
+@media(max-width:700px){
+  .page-head h1,.section-title h1{max-width:100%;}
+  .home-hero h1{font-size:clamp(2rem,9vw,2.7rem)!important;max-width:100%;}
+  .login-brand h1{font-size:clamp(2.8rem,15vw,4.2rem)!important;}
+  .brand-card-v214 > h2{font-size:2rem!important;}
+}

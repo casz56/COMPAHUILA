@@ -1,60 +1,55 @@
-# COMPAH — Compras Públicas de Alimentos del Huila v2.1
+# COMPAH — Compras Públicas de Alimentos del Huila v2.1.5
 
-Prototipo funcional institucional para seguimiento de compras públicas locales de alimentos, trazabilidad contractual, oferta agroalimentaria territorial y cumplimiento de la Ley 2046 de 2020.
+Prototipo funcional institucional para articular oferta local, demanda pública, trazabilidad contractual y seguimiento de compras públicas locales de alimentos en el Departamento del Huila.
 
-## Versión 2.1
+## Versión 2.1.3 — Branding institucional premium
 
-Mejoras principales:
+Esta versión trabaja sobre la base funcional v2.1.1 y refina la integración de identidad visual de **Compra Local Huila / COMPAH**.
 
-- Integración de identidad visual Compra Local Huila con 4 aplicaciones de marca.
-- Logo principal incorporado en login, home, sidebar y topbar.
-- Nueva sección de identidad visual dentro de la pantalla de inicio.
-- Dashboard gerencial rediseñado.
-- KPIs ejecutivos con lectura dinámica.
-- Gráficos de barra interactivos en HTML/CSS/JS.
-- Panel de lectura gerencial que cambia según indicador, barra o alerta seleccionada.
-- Mapa Leaflet mejorado con filtros por producto, región, municipio y tipo de actor.
-- Nueva pestaña de municipios con ficha municipal y enfoque en mapa.
-- Pestañas internas: Vista territorial, Municipios, Oferta y demanda, Brechas.
-- Módulo de productos rediseñado con panel integrado no invasivo de lectura agroalimentaria.
-- Alertas compactas tipo tarjetas ejecutivas.
-- Botón flotante inferior derecho con accesos rápidos.
-- Centro inteligente COMPAH con atajo Ctrl + K.
-- Mejoras de autosize/autoscale, responsive, microinteracciones y limpieza visual.
+### Mejoras aplicadas
 
-## Archivos
+- Logos optimizados con fondos transparentes cuando fue conveniente.
+- Recorte y limpieza visual de las marcas para evitar cajas blancas, bordes duros y sensación de imagen pegada.
+- Nueva jerarquía visual de marca:
+  - Gobernación del Huila e InfiHuila como respaldo institucional.
+  - Compra Local Huila como marca propia del aplicativo.
+  - COMPAH como nombre funcional del sistema.
+- Sidebar más limpio con lockup compacto.
+- Topbar con logos institucionales discretos y producto visual controlado.
+- Hero principal con marca integrada sin desbordamiento.
+- Sección de identidad visual convertida en galería profesional de usos de marca.
+- Watermark sutil del isotipo en hero y tarjeta normativa.
+- Revisión responsive para escritorio, portátil, tablet y móvil.
+- Eliminación de overflow horizontal provocado por logos sobredimensionados.
 
-- `index.html`
-- `styles.css`
-- `app.js`
-- `data.js`
-- `assets/logo-infihuila.png`
-- `assets/logo-gobernacion-huila.png`
-- `assets/logo-compra-local-horizontal.png`
-- `assets/logo-compra-local-isotipo.png`
-- `assets/logo-compra-local-verde.png`
-- `assets/logo-compra-local-stack.png`
+## Estructura
 
-## Uso
+- `index.html`: estructura principal del prototipo.
+- `styles.css`: estilos visuales, layout y branding v2.1.5.
+- `app.js`: interacción, navegación, mapa, dashboard y módulos.
+- `data.js`: datos simulados.
+- `assets/`: logos institucionales, logos Compra Local Huila optimizados y fondo rural.
 
-Abrir `index.html` en navegador o desde Visual Studio Code con Live Server.
+## Assets de marca destacados
 
-Usuario demo: `admin.compah@huila.gov.co`  
-Contraseña demo: `demo2026`
+- `assets/brand-compra-local-horizontal-transparente.png`
+- `assets/brand-compra-local-isotipo-transparente.png`
+- `assets/brand-compra-local-stack-transparente.png`
+- `assets/brand-compra-local-stack-blanco.png`
+- `assets/brand-compra-local-watermark.png`
+- `assets/brand-gobernacion-huila-transparente.png`
+- `assets/brand-infihuila-transparente.png`
 
-## Nota jurídica
+## Cómo ejecutar
 
-COMPAH es un prototipo funcional. No reemplaza SECOP II ni los procedimientos de contratación pública. El registro en la plataforma no constituye adjudicación contractual ni obligación de compra.
+Abra `index.html` en un navegador moderno o use una extensión como Live Server desde Visual Studio Code.
+
+## Nota institucional
+
+COMPAH es un prototipo funcional de información y trazabilidad. No reemplaza SECOP II ni constituye adjudicación contractual.
 
 
-## Ajustes v2.1
-- Corrección robusta del mapa Leaflet: CSS local crítico, recreación segura, límite de zoom y ajuste a límites del Huila.
-- Dashboard con tipografía auto size/auto scale, títulos sin remontarse y valores KPI sin desbordamiento.
-- Login institucional con fondo tipo campo huilense en asset local SVG y overlay sobrio.
-- Mejoras responsive y de armonía visual para paneles, botones y tarjetas.
-
-## Ajustes v2.1 — Identidad visual
-- Se trabajó sobre la base v2.0.1 solicitada.
-- Se integraron las cuatro propuestas de logo como activos del aplicativo.
-- Se mantuvo la estabilidad del mapa y el autoscale logrado en la versión base.
-- Se añadió un bloque de identidad para presentar usos de marca: principal, icono, institucional y compacto.
+## Ajuste v2.1.5
+- Se eliminó de la barra lateral el isotipo independiente superior y el chip de versión, porque saturaban visualmente el bloque de marca.
+- Se conserva una única marca horizontal Compra Local Huila en el sidebar, con proporción controlada y mejor respiración.
+- Se mantiene la identidad visual en login, home, hero y galería sin afectar el layout.
