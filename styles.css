@@ -132,3 +132,51 @@ body{ text-rendering: optimizeLegibility; }
   .map{height:62vh;min-height:420px;}
   .map-actions{position:static; padding:10px; background:#fff; border-bottom:1px solid var(--line);}
 }
+
+/* =========================================================
+   COMPAH v2.1 — integración identidad Compra Local Huila
+   ========================================================= */
+.login-identity-mark{
+  width:min(620px,100%);
+  border:1px solid rgba(0,108,114,.10);
+  border-radius:24px;
+  padding:16px 18px;
+  background:linear-gradient(180deg,#fff,rgba(247,251,250,.78));
+  box-shadow:0 18px 45px rgba(0,76,80,.06);
+}
+.login-identity-mark img{width:100%;height:auto;display:block;object-fit:contain;}
+.institutional-pair{opacity:.94;}
+.brand-symbol{
+  width:82px;height:82px;object-fit:cover;border-radius:24px;
+  border:1px solid var(--line);box-shadow:0 14px 32px rgba(0,76,80,.10);background:#fff;
+}
+.app-brand-logo{max-width:190px;border:0!important;padding:0!important;background:transparent!important;border-radius:0!important;margin-top:10px;}
+.top-brand-lockup{display:flex;align-items:center;gap:18px;min-width:0;}
+.top-brand-lockup .top-logo{height:44px;max-width:170px;object-fit:contain;}
+.top-product-logo{height:46px;max-width:230px;object-fit:contain;border-left:1px solid var(--line);padding-left:16px;}
+.hero-logo-lockup{width:min(560px,100%);margin:10px 0 14px;}
+.hero-logo-lockup img{width:100%;height:auto;display:block;filter:drop-shadow(0 12px 24px rgba(0,76,80,.08));}
+.identity-section{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.35fr);gap:22px;align-items:center;margin:22px 0;overflow:hidden;}
+.identity-copy h2{font-size:clamp(1.55rem,2.5vw,2.55rem);line-height:1.05;margin:10px 0 12px;letter-spacing:-.035em;text-wrap:balance;}
+.identity-copy p{color:var(--muted);line-height:1.65;margin:0;}
+.logo-showcase{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+.logo-showcase article{border:1px solid var(--line);border-radius:20px;background:#fff;min-height:150px;padding:14px;display:grid;place-items:center;gap:10px;box-shadow:0 12px 28px rgba(0,0,0,.035);transition:.2s;}
+.logo-showcase article:hover{transform:translateY(-3px);box-shadow:0 20px 48px rgba(0,76,80,.10);border-color:rgba(0,108,114,.32);}
+.logo-showcase article.dark{background:linear-gradient(145deg,#053f33,#006c72);}
+.logo-showcase img{max-width:100%;max-height:112px;object-fit:contain;display:block;}
+.logo-showcase span{font-size:.78rem;text-transform:uppercase;letter-spacing:.10em;color:var(--muted);font-weight:850;text-align:center;}
+.logo-showcase article.dark span{color:rgba(255,255,255,.88)}
+.home-hero>div:first-child{position:relative;overflow:hidden;}
+.home-hero>div:first-child:after{content:"";position:absolute;right:-75px;bottom:-95px;width:240px;height:240px;background:url('assets/logo-compra-local-isotipo.png') center/contain no-repeat;opacity:.05;pointer-events:none;}
+.norm-card{position:relative;overflow:hidden;}
+.norm-card:after{content:"";position:absolute;right:-30px;bottom:-34px;width:165px;height:165px;background:url('assets/logo-compra-local-isotipo.png') center/contain no-repeat;opacity:.12;filter:grayscale(1) brightness(2);}
+@media(max-width:1100px){
+  .identity-section{grid-template-columns:1fr;}
+  .top-product-logo{max-width:180px;height:40px;}
+}
+@media(max-width:760px){
+  .top-product-logo{display:none;}
+  .logo-showcase{grid-template-columns:1fr;}
+  .brand-symbol{width:70px;height:70px;}
+  .login-identity-mark{padding:12px;border-radius:18px;}
+}

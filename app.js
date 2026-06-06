@@ -213,7 +213,7 @@ function initControls(){
 }
 function initEvents(){
   $('#entryLoginForm').addEventListener('submit',e=>{e.preventDefault(); $('#loginScreen').classList.add('hidden'); setTimeout(()=>{ if(state.view==='mapa') { initMap(true); drawMarkers(); fitMapToData(); } },220);});
-  $('#entryMoreInfo').onclick=()=>alert('COMPAH v2.0.1 integra oferta local, compras públicas, supervisión, trazabilidad territorial y visualización gerencial.');
+  $('#entryMoreInfo').onclick=()=>alert('COMPAH v2.1 integra oferta local, compras públicas, supervisión, trazabilidad territorial y visualización gerencial.');
   $('#logoutBtn').onclick=()=>$('#loginScreen').classList.remove('hidden');
   $('#menuToggle').onclick=()=>$('#sidebar').classList.toggle('open');
   $$('.nav-item').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.view)));
