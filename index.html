@@ -3,174 +3,231 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>COMPAH v2.1.5 | Compra Local Huila</title>
-  <meta name="description" content="COMPAH v2.1.5: tipografía refinada, títulos más armónicos, autoscale global y mejoras visuales integrales." />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQxPmtu8uKzP9ccxkn1wM8IF3hLkFM=" crossorigin="" />
+  <title>COMPAH v2.1.12 | Compra Local Huila</title>
+  <meta name="description" content="COMPAH v2.1.12 AgroEco Style: red territorial, mercado institucional, mapa, trazabilidad y comunidad para compras públicas locales de alimentos del Huila." />
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <section id="loginScreen" class="login-screen">
-    <div class="login-card">
-      <div class="login-brand">
-        <div class="logo-pair institutional-pair">
+    <div class="login-bg"></div>
+    <div class="access-card">
+      <div class="access-story">
+        <div class="institution-row">
           <img src="assets/brand-gobernacion-huila-transparente.png" alt="Gobernación del Huila">
           <img src="assets/brand-infihuila-transparente.png" alt="InfiHuila">
         </div>
-        <div class="login-identity-mark">
-          <img src="assets/brand-compra-local-horizontal-transparente.png" alt="Compra Local Huila - conexión que alimenta nuestro territorio">
-        </div>
-        <span class="version-pill">Versión 2.1.3 · Branding limpio</span>
-        <h1>COMPAH</h1>
-        <p>Compra Local Huila · Compras Públicas de Alimentos del Huila</p>
-        <div class="login-kpis">
+        <img src="assets/logo-compra-local-stack-clean.png" class="access-logo" alt="Compra Local Huila">
+        <span class="soft-pill">Versión 2.1.12 · AgroEco Style</span>
+        <h1>Del campo huilense a la mesa pública</h1>
+        <p>Mapa, mercado institucional y trazabilidad para pequeños productores, organizaciones ACFC, operadores y entidades públicas del Huila.</p>
+        <div class="access-metrics">
           <span><strong>37</strong> municipios</span>
           <span><strong>30%</strong> meta Ley 2046</span>
-          <span><strong>BI</strong> territorial</span>
+          <span><strong>ACFC</strong> enfoque rural</span>
         </div>
       </div>
-      <form id="entryLoginForm" class="login-form">
+      <form id="entryLoginForm" class="access-form">
         <span class="eyebrow">Acceso institucional</span>
         <h2>Bienvenido</h2>
         <label>Usuario <input id="entryUser" value="admin.compah@huila.gov.co" required></label>
         <label>Contraseña <input id="entryPassword" type="password" value="demo2026" required></label>
-        <label>Rol <select id="entryRole"><option>Administrador</option><option>Supervisor</option><option>Operador</option><option>Productor</option><option>Entidad pública</option></select></label>
+        <label>Rol <select id="entryRole"><option>Administrador</option><option>Entidad compradora</option><option>Operador</option><option>Supervisor</option><option>Productor</option><option>Organización ACFC</option><option>Gestor territorial</option><option>Consulta pública</option></select></label>
         <button class="btn primary wide" type="submit">Ingresar al aplicativo</button>
-        <button class="btn ghost wide" type="button" id="entryMoreInfo">Conocer COMPAH</button>
-        <p class="fineprint">Prototipo funcional. No reemplaza SECOP II ni constituye adjudicación contractual.</p>
+        <button class="btn glass wide" type="button" id="entryMoreInfo">Conocer COMPAH</button>
+        <p class="fineprint">Demo funcional con datos simulados. No reemplaza SECOP II ni constituye adjudicación contractual.</p>
       </form>
     </div>
   </section>
 
-  <div class="app-shell">
-    <aside id="sidebar" class="sidebar">
-      <div class="brand-card brand-card-v214">
-        <span class="brand-accent-line" aria-hidden="true"></span>
-        <div class="sidebar-brand-hero">
-          <div class="sidebar-brand-plate">
-            <img src="assets/brand-compra-local-stack-transparente.png" alt="Compra Local Huila" class="brand-logo app-brand-logo sidebar-brand-primary">
-          </div>
-        </div>
-        <span class="sidebar-brand-eyebrow">Compra Local Huila</span>
-        <h2>COMPAH</h2>
-        <p>Sistema territorial de compras públicas de alimentos con trazabilidad, oferta local y lectura gerencial.</p>
-      </div>
-      <nav class="nav-list">
-        <button class="nav-item active" data-view="home">Inicio</button>
-        <button class="nav-item" data-view="dashboard">Dashboard</button>
-        <button class="nav-item" data-view="mapa">Mapa Huila</button>
-        <button class="nav-item" data-view="productores">Productores</button>
-        <button class="nav-item" data-view="productos">Productos</button>
-        <button class="nav-item" data-view="contratos">Contratos</button>
-        <button class="nav-item" data-view="compras">Compras locales</button>
-        <button class="nav-item" data-view="supervision">Supervisión</button>
-        <button class="nav-item" data-view="registro">Registro</button>
-        <button class="nav-item" data-view="reportes">Reportes</button>
+  <div id="app" class="site-shell is-hidden">
+    <header id="siteNav" class="site-nav glass-nav">
+      <button id="mobileMenu" class="nav-toggle" aria-label="Abrir navegación">☰</button>
+      <button class="brand-link brand-lockup-v212" data-view="inicio" aria-label="Ir al inicio">
+        <span class="brand-mark-v212">
+          <img src="assets/logo-compra-local-isotipo-clean.png" alt="" aria-hidden="true">
+        </span>
+        <span class="brand-text-v212">
+          <strong>COMPAH</strong>
+          <small>Compra Local Huila</small>
+        </span>
+        <span class="brand-line-v212" aria-hidden="true"></span>
+      </button>
+      <nav id="navMenu" class="nav-menu">
+        <button class="nav-link active" data-view="inicio"><span>🍃</span>Inicio</button>
+        <button class="nav-link" data-view="mapa"><span>📍</span>Mapa</button>
+        <button class="nav-link" data-view="mercado"><span>🧺</span>Mercado</button>
+        <button class="nav-link" data-view="red"><span>👥</span>Red</button>
+        <button class="nav-link" data-view="servicios"><span>🌱</span>Servicios</button>
+        <button class="nav-link" data-view="trazabilidad"><span>〽</span>Trazabilidad</button>
+        <button class="nav-link" data-view="comunidad"><span>📖</span>Comunidad</button>
+        <button class="nav-link" data-view="reportes"><span>📊</span>Reportes</button>
       </nav>
-      <div class="legal-mini"><strong>Ley 2046 de 2020</strong><span>Mínimo 30% de compra local.</span></div>
-    </aside>
+      <div class="nav-actions">
+        <button id="openCommand" class="nav-chip">Buscar · Ctrl K</button>
+        <select id="roleSelector" aria-label="Rol activo"><option>Administrador</option><option>Supervisor</option><option>Operador</option><option>Productor</option><option>Entidad pública</option></select>
+        <button id="logoutBtn" class="nav-chip danger">Salir</button>
+      </div>
+    </header>
 
-    <main class="main-content">
-      <header class="topbar">
-        <button id="menuToggle" class="icon-btn" aria-label="Abrir menú">☰</button>
-        <div class="top-brand-lockup"><img src="assets/brand-gobernacion-huila-transparente.png" alt="Gobernación del Huila" class="top-logo gov"><img src="assets/brand-infihuila-transparente.png" alt="InfiHuila" class="top-logo infi"><span class="brand-divider"></span><img src="assets/brand-compra-local-horizontal-transparente.png" alt="Compra Local Huila" class="top-product-logo"></div>
-        <div class="top-actions">
-          <button id="openCommand" class="btn ghost">Buscar · Ctrl K</button>
-          <select id="roleSelector"><option>Administrador</option><option>Supervisor</option><option>Operador</option><option>Productor</option><option>Entidad pública</option></select>
-          <button id="logoutBtn" class="btn secondary">Cerrar sesión</button>
-        </div>
-      </header>
-
-      <section id="view-home" class="view active-view">
-        <div class="home-hero">
-          <div>
-            <span class="eyebrow">Gobernación del Huila · InfiHuila · Compra Local Huila</span>
-            <div class="hero-logo-lockup"><img src="assets/brand-compra-local-horizontal-transparente.png" alt="Compra Local Huila"></div>
-            <h1>Del campo huilense a la mesa pública</h1>
-            <p>COMPAH integra oferta local, demanda institucional, trazabilidad contractual y lectura territorial para convertir la Ley 2046 en seguimiento gerencial.</p>
-            <div class="button-row"><button class="btn primary" data-view-target="dashboard">Ver panel ejecutivo</button><button class="btn ghost" data-view-target="mapa">Explorar mapa</button></div>
+    <main>
+      <section id="view-inicio" class="view active-view hero-view">
+        <div class="hero-overlay"></div>
+        <div class="hero-layout">
+          <div class="hero-content">
+            <span class="hero-pill">🛡 Trazabilidad · Compra pública local · Seguridad alimentaria</span>
+            <h1>La red que conecta<br><em>el campo huilense</em><br>con la mesa pública</h1>
+            <p>Mapa interactivo, mercado institucional y trazabilidad para pequeños productores, organizaciones ACFC, operadores, supervisores y entidades compradoras del Huila.</p>
+            <div class="hero-actions">
+              <button class="btn hero-primary" data-view-target="mapa">📍 Explorar el mapa</button>
+              <button class="btn hero-secondary" data-view-target="mercado">Acceder al mercado institucional →</button>
+              <button class="btn hero-ghost" data-view-target="red">Registrar oferta local</button>
+            </div>
+            <div class="hero-metrics">
+              <article><strong>37</strong><span>municipios conectados</span></article>
+              <article><strong>30%</strong><span>meta Ley 2046</span></article>
+              <article><strong>ACFC</strong><span>enfoque rural</span></article>
+              <article><strong>BI</strong><span>lectura territorial</span></article>
+            </div>
           </div>
-          <div class="norm-card"><span>Meta normativa</span><strong>30%</strong><p>Compra local mínima sobre recursos destinados a alimentos.</p></div>
-        </div>
-        <div class="route-strip">
-          <div><b>1</b><span>Registro de oferta local</span></div><div><b>2</b><span>Demanda pública</span></div><div><b>3</b><span>Compra y soporte</span></div><div><b>4</b><span>Validación supervisora</span></div><div><b>5</b><span>Reporte gerencial</span></div>
-        </div>
-        <section class="identity-section panel">
-          <div class="identity-copy">
-            <span class="eyebrow">Identidad visual v2.1.3</span>
-            <h2>Una marca territorial para dar seriedad, recordación y confianza</h2>
-            <p>La versión 2.1.5 refina la escala tipográfica y fortalece la arquitectura visual de Compra Local Huila con logos optimizados, fondos transparentes, usos institucionales controlados y una jerarquía clara frente a Gobernación del Huila e InfiHuila.</p>
-          </div>
-          <div class="logo-showcase">
-            <article><img src="assets/brand-compra-local-horizontal-transparente.png" alt="Logo horizontal Compra Local Huila"><span>Marca principal</span></article>
-            <article><img src="assets/brand-compra-local-isotipo-transparente.png" alt="Isotipo Compra Local Huila"><span>Ícono aplicativo</span></article>
-            <article class="dark"><img src="assets/brand-compra-local-stack-blanco.png" alt="Logo Compra Local Huila sobre fondo verde"><span>Uso sobre fondo institucional</span></article>
-            <article><img src="assets/brand-compra-local-stack-transparente.png" alt="Logo vertical Compra Local Huila"><span>Uso compacto</span></article>
-          </div>
-        </section>
-        <div class="feature-grid">
-          <article class="feature-card"><span>🌱</span><h3>Banco de oferta local</h3><p>Productores y organizaciones por municipio, vereda, producto, capacidad y estado documental.</p></article>
-          <article class="feature-card"><span>📑</span><h3>Contratos alimentarios</h3><p>Control del valor destinado a alimentos, compra local y cumplimiento mínimo normativo.</p></article>
-          <article class="feature-card"><span>✅</span><h3>Validación supervisora</h3><p>Soportes, observaciones, aprobación de compras, trazabilidad y alertas.</p></article>
-          <article class="feature-card"><span>🗺️</span><h3>Mapa territorial</h3><p>Oferta, demanda, brechas y concentración agroalimentaria por municipios del Huila.</p></article>
+          <aside class="hero-side">
+            <div class="hero-art-card">
+              <span class="eyebrow hero-side-eyebrow">Identidad territorial</span>
+              <img class="hero-brand-mark" src="assets/logo-compra-local-stack-clean.png" alt="Compra Local Huila">
+              <p class="hero-brand-copy">Compra pública local con trazabilidad, enfoque rural y lectura territorial para conectar oferta y demanda institucional.</p>
+              <div class="hero-badge-row">
+                <span class="hero-soft-chip">Compra local</span>
+                <span class="hero-soft-chip">ACFC</span>
+                <span class="hero-soft-chip">Trazabilidad</span>
+              </div>
+              <div class="hero-watermark-wrap">
+                <img class="hero-watermark" src="assets/brand-compra-local-watermark.png" alt="Marca de agua Compra Local Huila">
+              </div>
+            </div>
+            <div class="hero-insight-grid">
+              <article class="hero-insight">
+                <span class="hero-insight-label">Oferta activa</span>
+                <strong>+58.842</strong>
+                <small>unidades agregadas</small>
+              </article>
+              <article class="hero-insight">
+                <span class="hero-insight-label">Cobertura</span>
+                <strong>37/37</strong>
+                <small>municipios visibles</small>
+              </article>
+              <article class="hero-insight wide">
+                <span class="hero-insight-label">Lectura gerencial</span>
+                <strong>Alertas, contratos y rutas de abastecimiento</strong>
+                <small>Visualización premium con mapa, mercado y trazabilidad</small>
+              </article>
+            </div>
+          </aside>
         </div>
       </section>
 
-      <section id="view-dashboard" class="view">
-        <div class="page-head">
-          <div><span class="eyebrow">Panel ejecutivo</span><h1>Dashboard gerencial COMPAH</h1><p>Seguimiento territorial, contractual y normativo de compras públicas locales de alimentos.</p></div>
-          <div class="button-row"><button class="btn ghost" id="goAlerts">Ver alertas</button><button class="btn secondary" id="refreshKpis">Actualizar indicadores</button><button class="btn primary" id="exportDashboard">Exportar reporte</button></div>
-        </div>
-        <div id="kpiGrid" class="kpi-grid executive"></div>
-        <div id="kpiInsight" class="insight-panel"><strong>Lectura gerencial</strong><p>Seleccione un KPI, una barra o una alerta para consultar interpretación y acción sugerida.</p></div>
-        <div class="dashboard-grid-v20">
-          <article class="panel chart-panel wide"><div class="panel-title"><h3>Cumplimiento por contrato</h3><span>Meta mínima 30%</span></div><div id="contractBars" class="hbar-chart"></div></article>
-          <article class="panel chart-panel"><div class="panel-title"><h3>Top municipios por compra local</h3><span>Oferta territorial</span></div><div id="municipioBars" class="hbar-chart compact"></div></article>
-          <article class="panel chart-panel"><div class="panel-title"><h3>Productos más demandados</h3><span>Demanda vs oferta</span></div><div id="productBars" class="vbar-chart"></div></article>
-          <article class="panel chart-panel"><div class="panel-title"><h3>Alertas por tipo</h3><span>Priorización</span></div><div id="alertBars" class="hbar-chart compact"></div></article>
-        </div>
-        <div class="panel alerts-panel"><div class="panel-title"><h3>Alertas prioritarias</h3><span>Contratos, documentos y trazabilidad</span></div><div id="alertList" class="alert-cards"></div></div>
+      <section class="intro-band">
+        <div class="intro-card"><b>Oferta local</b><span>Productores, asociaciones, ACFC y capacidad productiva.</span></div>
+        <div class="intro-card"><b>Demanda pública</b><span>PAE, ESE, ICBF, alcaldías, comedores y programas sociales.</span></div>
+        <div class="intro-card"><b>Compra y soporte</b><span>Pedido, entrega, factura, acta y validación supervisora.</span></div>
+        <div class="intro-card"><b>Reporte gerencial</b><span>Cumplimiento Ley 2046, alertas y trazabilidad territorial.</span></div>
       </section>
 
-      <section id="view-mapa" class="view">
-        <div class="page-head compact-head">
-          <div><span class="eyebrow">Territorio productivo</span><h1>Mapa interactivo del Huila</h1><p>Oferta productiva, demanda institucional y trazabilidad territorial.</p></div>
-          <div class="filters"><select id="mapProductFilter"></select><select id="mapRegionFilter"></select><select id="mapMunicipioFilter"></select><select id="mapActorFilter"><option>Todos los actores</option><option>Productor individual</option><option>Organización ACFC</option></select></div>
+      <section id="view-mercado" class="view page mercado-page">
+        <div class="market-hero">
+          <span class="eyebrow light">Mercado institucional local</span>
+          <h2>Productos frescos y transformados para compras públicas</h2>
+          <p>Oferta visible de pequeños productores y organizaciones ACFC del Huila, con filtros por categoría, municipio, disponibilidad y trazabilidad.</p>
         </div>
-        <div class="tabbar"><button class="map-tab active" data-tab="territorial">Vista territorial</button><button class="map-tab" data-tab="municipios">Municipios</button><button class="map-tab" data-tab="oferta">Oferta y demanda</button><button class="map-tab" data-tab="brechas">Brechas</button></div>
-        <div id="mapTab-territorial" class="map-tab-content active">
-          <div class="map-layout-v20"><div class="map-wrap"><div class="map-actions"><button id="fitHuila" class="btn map-btn">Ajustar Huila</button><button id="showOffer" class="btn map-btn">Ver oferta</button><button id="clearMap" class="btn map-btn">Limpiar filtros</button></div><div id="map" class="map"></div></div><aside class="panel map-panel"><h3>Lectura territorial</h3><div id="mapReading" class="map-reading"></div><div id="mapSummary" class="metric-list"></div></aside></div>
+        <div class="market-controls panel-float">
+          <div class="search-giant"><span>⌕</span><input id="marketSearch" placeholder="Buscar producto, productor, organización o municipio..."></div>
+          <select id="marketSort"><option>Relevancia</option><option>Mayor capacidad</option><option>De temporada</option><option>Con brecha</option></select>
+          <div id="marketChips" class="chip-row"></div>
         </div>
-        <div id="mapTab-municipios" class="map-tab-content"><div class="municipio-layout"><div id="municipioGrid" class="municipio-grid"></div><aside id="municipioFicha" class="panel municipio-ficha"></aside></div></div>
-        <div id="mapTab-oferta" class="map-tab-content"><div id="offerDemandGrid" class="cards-grid"></div></div>
-        <div id="mapTab-brechas" class="map-tab-content"><div id="gapGrid" class="cards-grid"></div></div>
+        <div class="section-line"><span id="marketCount">20 productos disponibles</span><button class="btn secondary" data-toast="Catálogo exportado en modo demo.">Exportar catálogo</button></div>
+        <div id="marketGrid" class="market-grid"></div>
       </section>
 
-      <section id="view-productores" class="view">
-        <div class="page-head compact-head"><div><span class="eyebrow">Banco de oferta local</span><h1>Productores y organizaciones</h1></div><div class="filters"><input id="producerSearch" placeholder="Buscar productor, producto o municipio"><select id="producerMunicipioFilter"></select><select id="producerTipoFilter"><option>Todos</option><option>Productor individual</option><option>Organización ACFC</option></select></div></div>
-        <div class="table-wrap"><table><thead><tr><th>Actor</th><th>Municipio</th><th>Tipo</th><th>Productos</th><th>Capacidad</th><th>Estado</th></tr></thead><tbody id="producerTable"></tbody></table></div>
+      <section id="view-mapa" class="view page map-page">
+        <div class="map-searchbar">
+          <div class="search-giant map-search"><span>⌕</span><input id="mapSearch" placeholder="Buscar producto, productor/a, organización, municipio o punto de entrega..."></div>
+          <button id="toggleMapFilters" class="btn light">Ocultar filtros</button>
+        </div>
+        <div class="map-count"><strong id="actorsCount">37</strong> actores encontrados</div>
+        <div id="mapFilters" class="map-filters">
+          <button class="map-filter active" data-type="Todos">Todos</button>
+          <button class="map-filter" data-type="Oferta">▲ Oferta</button>
+          <button class="map-filter" data-type="Demanda">▼ Demanda</button>
+          <button class="map-filter" data-type="Servicio">● Servicio</button>
+          <button class="map-filter" data-type="Certificación">◆ Certificación</button>
+          <button class="map-filter" data-type="ACFC">ACFC</button>
+        </div>
+        <div class="map-layout-agro">
+          <div id="map" class="map-premium"></div>
+          <aside class="map-panel">
+            <span class="eyebrow">Lectura territorial</span>
+            <h3 id="mapPanelTitle">Red territorial del Huila</h3>
+            <p id="mapPanelText">Seleccione o pase el cursor por un actor para actualizar la lectura sin tapar el mapa.</p>
+            <div class="legend">
+              <span><i class="dot offer"></i>Oferta</span><span><i class="dot demand"></i>Demanda</span><span><i class="dot service"></i>Servicio</span><span><i class="dot cert"></i>Certificación</span>
+            </div>
+            <div id="mapStats" class="map-stats"></div>
+            <button id="fitHuila" class="btn primary wide">Centrar Huila</button>
+          </aside>
+        </div>
       </section>
 
-      <section id="view-productos" class="view">
-        <div class="page-head compact-head"><div><span class="eyebrow">Catálogo de alimentos</span><h1>Líneas agroalimentarias priorizadas</h1></div><div class="filters"><input id="productSearch" placeholder="Buscar producto o categoría"><select id="productCategoryFilter"></select><button id="exportProducts" class="btn secondary">Exportar catálogo</button></div></div>
-        <div class="products-layout"><div id="productCatalog" class="product-grid"></div><aside id="productReading" class="panel product-reading"></aside></div>
+      <section id="view-red" class="view page red-page">
+        <div class="page-heading editorial"><span class="eyebrow">Red territorial</span><h2>Actores que conectan oferta, demanda y supervisión</h2><p>Productores, organizaciones ACFC, operadores, supervisores, entidades compradoras, ESE, alcaldías y gestores territoriales.</p></div>
+        <div class="network-controls"><input id="networkSearch" placeholder="Buscar actor, municipio, producto o rol"><div class="chip-row"><button class="chip active">Todos</button><button class="chip">Oferta</button><button class="chip">Demanda</button><button class="chip">Servicio</button><button class="chip">Supervisor</button><button class="chip">ACFC</button></div></div>
+        <div id="networkGrid" class="network-grid"></div>
       </section>
 
-      <section id="view-contratos" class="view"><div class="page-head"><div><span class="eyebrow">Contratos</span><h1>Contratos alimentarios</h1></div></div><div id="contractsGrid" class="cards-grid"></div></section>
-      <section id="view-compras" class="view"><div class="page-head"><div><span class="eyebrow">Trazabilidad</span><h1>Compras locales reportadas</h1></div></div><div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Contrato</th><th>Productor</th><th>Producto</th><th>Cantidad</th><th>Valor</th><th>Estado</th></tr></thead><tbody id="purchaseTable"></tbody></table></div></section>
-      <section id="view-supervision" class="view"><div class="page-head"><div><span class="eyebrow">Supervisión</span><h1>Validación de soportes</h1></div></div><div id="supervisionList" class="supervision-list"></div></section>
-      <section id="view-registro" class="view"><div class="page-head"><div><span class="eyebrow">Registro asistido</span><h1>Nuevo actor COMPAH</h1><p>Formulario demo para productores, organizaciones, operadores o supervisores.</p></div></div><form class="panel form-grid"><label>Tipo de actor<select><option>Productor individual</option><option>Organización ACFC</option><option>Operador</option><option>Supervisor</option></select></label><label>Nombre<input placeholder="Nombre o razón social"></label><label>Municipio<select id="registroMunicipio"></select></label><label>Producto principal<select id="registroProducto"></select></label><label>Capacidad mensual<input placeholder="Ej. 1200 kg"></label><label>Estado documental<select><option>Validado</option><option>Pendiente</option><option>Requiere subsanación</option></select></label><button class="btn primary" type="button" id="saveDemo">Guardar registro demo</button></form></section>
-      <section id="view-reportes" class="view"><div class="page-head"><div><span class="eyebrow">Reportes</span><h1>Centro de reportes</h1></div></div><div class="cards-grid" id="reportsGrid"></div></section>
+      <section id="view-servicios" class="view page services-page">
+        <div class="page-heading editorial"><span class="eyebrow">Servicios COMPAH</span><h2>Herramientas para fortalecer la compra pública local</h2><p>Un portafolio operativo para registrar, conectar, validar, trazar y reportar compras locales bajo Ley 2046.</p></div>
+        <div id="servicesGrid" class="services-grid"></div>
+      </section>
 
-      <footer>COMPAH v2.1.5 · Sistema complementario de información y trazabilidad. No reemplaza SECOP II ni los procedimientos de contratación pública.</footer>
+      <section id="view-trazabilidad" class="view page trace-page">
+        <div class="page-heading editorial"><span class="eyebrow">Trazabilidad y validación</span><h2>Del productor local al contrato público</h2><p>Ruta documental de la compra local: oferta, demanda, matching, pedido, entrega, soporte, validación y reporte Ley 2046.</p></div>
+        <div class="trace-flow" id="traceFlow"></div>
+        <div class="trace-detail">
+          <div class="qr-card"><div class="qr-sim"></div><b>Ficha trazable CLH-2026-047</b><span>Compra validada · suma a Ley 2046</span></div>
+          <div><h3>Cholupa · Asociación AgroHuila Grande</h3><p>Entrega georreferenciada en Neiva, validada por supervisor del programa PAE. Incluye factura, remisión, acta y soporte fotográfico simulado.</p><button class="btn primary" data-toast="Ficha trazable generada en modo demo.">Generar ficha trazable</button></div>
+        </div>
+      </section>
+
+      <section id="view-comunidad" class="view page community-page">
+        <div class="page-heading editorial"><span class="eyebrow">Comunidad</span><h2>Conocimiento, ruedas de negocio y cultura de compra local</h2><p>Historias, guías, biblioteca Ley 2046, capacitaciones y agenda territorial para fortalecer el abastecimiento público local.</p></div>
+        <div id="communityGrid" class="community-grid"></div>
+      </section>
+
+      <section id="view-reportes" class="view page reports-page">
+        <div class="page-heading editorial"><span class="eyebrow">Dashboard y reportes</span><h2>Lectura gerencial de la compra local</h2><p>Indicadores de cumplimiento, valor contratado, productores beneficiados, brechas, alertas y reportes para seguimiento institucional.</p></div>
+        <div id="kpiGrid" class="kpi-grid"></div>
+        <div class="report-layout">
+          <div class="chart-panel"><h3>Cumplimiento Ley 2046 por contrato</h3><div id="barChart" class="bar-chart"></div></div>
+          <div class="chart-panel"><h3>Reportes disponibles</h3><div id="reportsList" class="reports-list"></div></div>
+        </div>
+      </section>
     </main>
+
+    <button id="fabMain" class="fab">+</button>
+    <div id="fabMenu" class="fab-menu">
+      <button data-view-target="red">Registrar oferta</button>
+      <button data-view-target="mercado">Ver mercado</button>
+      <button data-view-target="mapa">Explorar mapa</button>
+      <button data-toast="Reporte Ley 2046 generado en modo demo.">Generar reporte</button>
+    </div>
+
+    <div id="commandModal" class="command-modal" aria-hidden="true">
+      <div class="command-box">
+        <div class="search-giant"><span>⌕</span><input id="commandInput" placeholder="Buscar en COMPAH: productos, productores, municipios, reportes..."></div>
+        <div id="commandResults" class="command-results"></div>
+      </div>
+    </div>
   </div>
-
-  <button id="assistantButton" class="floating-btn" aria-label="Abrir asistente">+</button>
-  <div id="quickMenu" class="quick-menu"><button data-view-target="registro">Nuevo productor</button><button data-view-target="compras">Registrar compra</button><button data-view-target="mapa">Ver mapa</button><button data-view-target="reportes">Generar reporte</button><button id="quickSearch">Buscar Ctrl+K</button></div>
-
-  <div id="commandCenter" class="command-center" aria-hidden="true"><div class="command-card"><div class="command-head"><h3>Centro inteligente COMPAH</h3><button id="closeCommand" class="icon-btn">×</button></div><input id="commandInput" placeholder="Buscar productores, productos, municipios, contratos o alertas..."><div id="commandResults" class="command-results"></div></div></div>
-
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="data.js"></script>
   <script src="app.js"></script>
 </body>
